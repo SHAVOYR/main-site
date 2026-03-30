@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Qilestra Tech</title>
+  <meta name="description" content="Get in touch with Qilestra Tech for managed IT services, security consulting, and infrastructure engineering engagements.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-icon">QT</span>
+        Qilestra Tech
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="case-studies.html">Case Studies</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===================== PAGE HERO ===================== -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-label">Contact</span>
+      <h1>Start a Conversation</h1>
+      <p>Whether you need a scoped engagement, a security assessment, or ongoing managed services — we'll respond within one business day.</p>
+    </div>
+  </section>
+
+  <!-- ===================== CONTACT FORM & INFO ===================== -->
+  <section class="section">
+    <div class="container">
+      <div class="contact-grid">
+
+        <!-- Contact Form -->
+        <div>
+          <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Send Us a Message</h2>
+          <form id="contact-form">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" name="name" placeholder="Jane Mitchell" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" placeholder="jane@company.com" required>
+            </div>
+            <div class="form-group">
+              <label for="company">Company</label>
+              <input type="text" id="company" name="company" placeholder="Acme Corp">
+            </div>
+            <div class="form-group">
+              <label for="service">Service Area</label>
+              <select id="service" name="service">
+                <option value="" disabled selected>Select a service area</option>
+                <option value="azure">Azure Cloud Infrastructure</option>
+                <option value="identity">Identity &amp; Access Management</option>
+                <option value="siem">Security Monitoring &amp; SIEM</option>
+                <option value="ad">Active Directory Hardening</option>
+                <option value="linux">Linux Server Administration</option>
+                <option value="endpoint">Endpoint Security &amp; Compliance</option>
+                <option value="other">Other / Not Sure</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Describe your project, environment, or the challenge you're facing. The more detail you provide, the more specific our response will be." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Send Message &rarr;</button>
+          </form>
+        </div>
+
+        <!-- Contact Info Sidebar -->
+        <div>
+          <div class="contact-info-card">
+            <h3>Contact Information</h3>
+            <div class="info-row">
+              <div class="info-icon">&#9993;</div>
+              <div>
+                <strong style="color: var(--color-heading);">Email</strong><br>
+                contact@qilestratech.com
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">&#128222;</div>
+              <div>
+                <strong style="color: var(--color-heading);">Phone</strong><br>
+                (555) 247-8301
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">&#128205;</div>
+              <div>
+                <strong style="color: var(--color-heading);">Location</strong><br>
+                Remote-first — serving clients across the United States
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">&#9200;</div>
+              <div>
+                <strong style="color: var(--color-heading);">Response Time</strong><br>
+                Within 1 business day
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-info-card">
+            <h3>What to Expect</h3>
+            <div class="info-row">
+              <div class="info-icon">1</div>
+              <div>
+                <strong style="color: var(--color-heading);">Initial Response</strong><br>
+                We review your message and respond with clarifying questions or a proposed discovery call within 1 business day.
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">2</div>
+              <div>
+                <strong style="color: var(--color-heading);">Discovery Call</strong><br>
+                A 30-minute technical conversation to understand your environment, objectives, and constraints.
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">3</div>
+              <div>
+                <strong style="color: var(--color-heading);">Scope &amp; Proposal</strong><br>
+                We deliver a written scope of work with defined deliverables, timeline, and pricing.
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-info-card">
+            <h3>Common Engagement Types</h3>
+            <div class="info-row">
+              <div class="info-icon">&rarr;</div>
+              <div>Azure tenant architecture and migration</div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">&rarr;</div>
+              <div>Conditional Access and MFA deployment</div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">&rarr;</div>
+              <div>SIEM platform deployment and tuning</div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">&rarr;</div>
+              <div>Active Directory security assessment</div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">&rarr;</div>
+              <div>Linux server fleet hardening</div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">&rarr;</div>
+              <div>Endpoint compliance and MDM rollout</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>Qilestra Tech</h4>
+          <p>Managed IT services and security consulting for mid-market and enterprise organizations. We engineer infrastructure that works.</p>
+        </div>
+        <div>
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="case-studies.html">Case Studies</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Services</h4>
+          <ul>
+            <li><a href="services.html">Azure Infrastructure</a></li>
+            <li><a href="services.html">Identity &amp; Access</a></li>
+            <li><a href="services.html">SIEM &amp; Monitoring</a></li>
+            <li><a href="services.html">Linux Administration</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="blog.html">Blog</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Qilestra Tech. All rights reserved.</p>
+        <p>Built with precision.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services — Qilestra Tech</title>
+  <meta name="description" content="Qilestra Tech service offerings: Azure cloud infrastructure, identity management, SIEM deployment, Active Directory hardening, Linux administration, and endpoint security.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-icon">QT</span>
+        Qilestra Tech
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="case-studies.html">Case Studies</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===================== PAGE HERO ===================== -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-label">Services</span>
+      <h1>What We Deliver</h1>
+      <p>Infrastructure engineering and security operations — scoped, architected, and implemented with full documentation at every phase.</p>
+    </div>
+  </section>
+
+  <!-- ===================== SERVICES GRID ===================== -->
+  <section class="section">
+    <div class="container">
+      <div class="services-grid">
+
+        <!-- Service 1: Azure Cloud Infrastructure -->
+        <div class="service-card fade-in">
+          <div class="icon">&#9729;</div>
+          <h3>Azure Cloud Infrastructure</h3>
+          <p>We design and deploy Azure environments built for governance, scalability, and operational clarity. Every tenant we configure follows Microsoft's Cloud Adoption Framework with modifications for client-specific compliance requirements.</p>
+          <ul>
+            <li>Tenant and subscription architecture</li>
+            <li>Virtual network design and peering</li>
+            <li>Azure Policy and management groups</li>
+            <li>Resource tagging and cost governance</li>
+            <li>Hybrid connectivity (VPN / ExpressRoute)</li>
+            <li>Azure Monitor and Log Analytics configuration</li>
+            <li>Infrastructure-as-Code with ARM / Bicep templates</li>
+          </ul>
+        </div>
+
+        <!-- Service 2: Identity & Access Management -->
+        <div class="service-card fade-in">
+          <div class="icon">&#128274;</div>
+          <h3>Identity &amp; Access Management</h3>
+          <p>Identity is the new perimeter. We implement Zero Trust identity architectures using Azure AD (Entra ID), Conditional Access, and Privileged Identity Management to enforce least-privilege access across hybrid environments.</p>
+          <ul>
+            <li>Azure AD tenant configuration and hardening</li>
+            <li>Conditional Access policy design and deployment</li>
+            <li>MFA rollout and registration campaigns</li>
+            <li>Role-Based Access Control (RBAC) framework</li>
+            <li>Privileged Identity Management (PIM)</li>
+            <li>Azure AD Connect / Cloud Sync</li>
+            <li>Guest access governance and access reviews</li>
+          </ul>
+        </div>
+
+        <!-- Service 3: SIEM & Security Monitoring -->
+        <div class="service-card fade-in">
+          <div class="icon">&#128737;</div>
+          <h3>Security Monitoring &amp; SIEM</h3>
+          <p>We deploy and tune SIEM platforms that produce actionable alerts — not noise. Our implementations integrate endpoint, network, and application logs into a unified view with correlation rules mapped to MITRE ATT&amp;CK.</p>
+          <ul>
+            <li>Wazuh manager and agent deployment</li>
+            <li>Splunk indexer and forwarder architecture</li>
+            <li>Microsoft Sentinel workspace configuration</li>
+            <li>Log source onboarding and normalization</li>
+            <li>Detection rule development (Sigma / KQL / SPL)</li>
+            <li>Alert triage workflows and escalation procedures</li>
+            <li>Incident response playbook documentation</li>
+          </ul>
+        </div>
+
+        <!-- Service 4: Active Directory Hardening -->
+        <div class="service-card fade-in">
+          <div class="icon">&#9881;</div>
+          <h3>Active Directory Hardening</h3>
+          <p>Legacy Active Directory environments accumulate risk over time. We assess, remediate, and harden AD infrastructure following CIS benchmarks and Microsoft's tiered administration model.</p>
+          <ul>
+            <li>AD security assessment and gap analysis</li>
+            <li>Group Policy design and enforcement</li>
+            <li>Fine-grained password policies</li>
+            <li>LAPS deployment and management</li>
+            <li>Tiered administrative access model</li>
+            <li>AD audit logging and monitoring</li>
+            <li>Service account hardening and gMSA migration</li>
+          </ul>
+        </div>
+
+        <!-- Service 5: Linux Server Administration -->
+        <div class="service-card fade-in">
+          <div class="icon">&#128421;</div>
+          <h3>Linux Server Administration</h3>
+          <p>We manage and harden Linux server fleets — from initial provisioning through ongoing patch compliance and log monitoring. Our automation reduces configuration drift and enforces baseline security.</p>
+          <ul>
+            <li>CIS benchmark implementation (Ubuntu / RHEL)</li>
+            <li>Automated hardening with Bash and Ansible</li>
+            <li>Firewall configuration (iptables / firewalld / nftables)</li>
+            <li>SSH hardening and key management</li>
+            <li>Log aggregation with rsyslog and auditd</li>
+            <li>Patch management and vulnerability scanning</li>
+            <li>Cron job auditing and process monitoring</li>
+          </ul>
+        </div>
+
+        <!-- Service 6: Endpoint Security & Compliance -->
+        <div class="service-card fade-in">
+          <div class="icon">&#128187;</div>
+          <h3>Endpoint Security &amp; Compliance</h3>
+          <p>We deploy and manage endpoint protection across Windows, macOS, and mobile device fleets. Our implementations enforce compliance baselines and provide centralized visibility into device health.</p>
+          <ul>
+            <li>Microsoft Defender for Endpoint onboarding</li>
+            <li>Intune device compliance policies</li>
+            <li>Application control and allowlisting</li>
+            <li>BitLocker / FileVault encryption enforcement</li>
+            <li>Endpoint Detection and Response (EDR) tuning</li>
+            <li>Device configuration profiles</li>
+            <li>Compliance reporting and remediation workflows</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PROCESS ===================== -->
+  <section class="section" style="background: var(--color-bg-alt);">
+    <div class="container">
+      <span class="section-label">Our Process</span>
+      <h2 class="section-title">Engagement Methodology</h2>
+      <p class="section-subtitle">Every engagement follows a repeatable, documented process — regardless of scope or technology stack.</p>
+
+      <div class="card-grid" style="margin-top: 2.5rem;">
+        <div class="card fade-in">
+          <h3>01 — Discovery</h3>
+          <p>We audit the current environment, review existing documentation, interview stakeholders, and produce a gap analysis with prioritized findings.</p>
+        </div>
+        <div class="card fade-in">
+          <h3>02 — Architecture</h3>
+          <p>We design the target state with architecture diagrams, configuration specifications, and a phased implementation plan with defined milestones.</p>
+        </div>
+        <div class="card fade-in">
+          <h3>03 — Implementation</h3>
+          <p>We deploy in controlled phases with validation at each checkpoint. Changes are documented in real-time and tested against acceptance criteria.</p>
+        </div>
+        <div class="card fade-in">
+          <h3>04 — Validation</h3>
+          <p>We run functional tests, security scans, and compliance checks against the target configuration. Findings are remediated before sign-off.</p>
+        </div>
+        <div class="card fade-in">
+          <h3>05 — Documentation</h3>
+          <p>We deliver complete runbooks, configuration references, architecture decision records, and knowledge transfer sessions to internal teams.</p>
+        </div>
+        <div class="card fade-in">
+          <h3>06 — Ongoing Support</h3>
+          <p>For managed service clients, we provide continuous monitoring, quarterly reviews, patch management, and incident response within defined SLAs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CTA ===================== -->
+  <section class="section">
+    <div class="container" style="text-align:center;">
+      <h2 class="section-title">Need a Specific Capability?</h2>
+      <p class="section-subtitle" style="margin: 0 auto 2rem;">If your project doesn't fit neatly into a service category, reach out. We scope custom engagements based on your environment and objectives.</p>
+      <a href="contact.html" class="btn btn-primary">Start a Conversation &rarr;</a>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>Qilestra Tech</h4>
+          <p>Managed IT services and security consulting for mid-market and enterprise organizations. We engineer infrastructure that works.</p>
+        </div>
+        <div>
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="case-studies.html">Case Studies</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Services</h4>
+          <ul>
+            <li><a href="services.html">Azure Infrastructure</a></li>
+            <li><a href="services.html">Identity &amp; Access</a></li>
+            <li><a href="services.html">SIEM &amp; Monitoring</a></li>
+            <li><a href="services.html">Linux Administration</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="blog.html">Blog</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Qilestra Tech. All rights reserved.</p>
+        <p>Built with precision.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case Studies — Qilestra Tech</title>
+  <meta name="description" content="Technical case studies from Qilestra Tech engagements — Azure identity, SIEM deployment, Active Directory hardening, and Linux server automation.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-icon">QT</span>
+        Qilestra Tech
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="case-studies.html">Case Studies</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===================== PAGE HERO ===================== -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-label">Case Studies</span>
+      <h1>Technical Engagements, Documented</h1>
+      <p>Each case study follows a structured consulting format — from client background through architecture, implementation, and measurable outcomes.</p>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       CASE STUDY 1 — Azure Identity & Conditional Access Implementation
+       ================================================================ -->
+  <section id="cs-identity" class="section">
+    <div class="container">
+      <div class="cs-body">
+        <span class="cs-card-tag identity" style="margin-bottom: 1.5rem;">Identity &amp; Access Management</span>
+        <h1 style="font-size: 2rem; margin-bottom: .5rem;">Azure Identity &amp; Conditional Access Implementation</h1>
+        <div class="cs-meta">
+          <span>&#128197; Duration: 6 weeks</span>
+          <span>&#128101; Scope: 300 users</span>
+          <span>&#127970; Industry: Financial Services</span>
+        </div>
+
+        <!-- Client Background -->
+        <h2>1. Client Background</h2>
+        <p>The client is a mid-sized financial services firm with approximately 300 employees operating across three branch offices and a growing remote workforce. Their IT environment was a hybrid configuration with on-premises Active Directory synced to Azure AD via Azure AD Connect. The organization had recently undergone a compliance audit that flagged multiple identity-related control gaps, including the absence of multi-factor authentication, overly permissive role assignments, and no Conditional Access policies governing sign-in behavior.</p>
+        <p>The firm operated in a regulated environment subject to SOC 2 Type II and state financial regulatory requirements. Their existing identity posture relied on legacy password-only authentication with no centralized policy enforcement for cloud application access.</p>
+
+        <!-- Problem -->
+        <h2>2. Problem</h2>
+        <p>The compliance audit identified the following critical findings:</p>
+        <ul>
+          <li>No multi-factor authentication was enforced for any user population, including administrators and privileged accounts.</li>
+          <li>Global Administrator roles were permanently assigned to six accounts, three of which belonged to non-IT staff who had inherited permissions during earlier migrations.</li>
+          <li>No Conditional Access policies existed — all authentication requests were evaluated identically regardless of location, device state, or risk level.</li>
+          <li>Guest accounts from prior vendor engagements remained active with access to SharePoint sites containing sensitive financial data.</li>
+          <li>No sign-in risk detection or automated remediation was configured in Azure AD Identity Protection.</li>
+        </ul>
+        <p>The audit required remediation within 90 days. The client needed a partner who could design and implement a Zero Trust identity framework without disrupting daily operations for 300 users across multiple offices.</p>
+
+        <!-- Technical Environment -->
+        <h2>3. Technical Environment</h2>
+        <ul>
+          <li><strong>Identity Provider:</strong> Azure Active Directory (Entra ID) — P2 licensing</li>
+          <li><strong>Directory Sync:</strong> Azure AD Connect v2.x with password hash synchronization</li>
+          <li><strong>On-Premises AD:</strong> Windows Server 2019 domain controllers (2 DCs, single forest, single domain)</li>
+          <li><strong>Email &amp; Productivity:</strong> Microsoft 365 E3</li>
+          <li><strong>Endpoints:</strong> 280 Windows 11 devices managed via Intune, 40 macOS devices unmanaged</li>
+          <li><strong>VPN:</strong> Cisco AnyConnect for remote access</li>
+          <li><strong>Line-of-Business Apps:</strong> 4 SaaS applications federated via SAML, 2 on-premises apps published via Azure AD Application Proxy</li>
+        </ul>
+
+        <!-- Architecture -->
+        <h2>4. Architecture</h2>
+        <p>We designed a layered Conditional Access architecture organized into three policy tiers:</p>
+
+        <h3>Tier 1 — Baseline Policies (All Users)</h3>
+        <ul>
+          <li>Require MFA for all cloud applications from untrusted networks</li>
+          <li>Block legacy authentication protocols (IMAP, POP3, SMTP AUTH, ActiveSync with basic auth)</li>
+          <li>Require compliant or Hybrid Azure AD Joined devices for Microsoft 365 access</li>
+          <li>Block sign-ins from countries outside the firm's operating geography</li>
+        </ul>
+
+        <h3>Tier 2 — Privileged Access Policies</h3>
+        <ul>
+          <li>Require MFA on every sign-in for all directory roles (no trusted location exemptions)</li>
+          <li>Require compliant device AND MFA for Azure portal, Microsoft 365 admin center, and Exchange admin center</li>
+          <li>Session controls: 1-hour sign-in frequency for privileged roles, no persistent browser sessions</li>
+        </ul>
+
+        <h3>Tier 3 — Risk-Based Policies (Identity Protection)</h3>
+        <ul>
+          <li>Medium and high sign-in risk: require MFA challenge</li>
+          <li>High user risk: force password change with MFA</li>
+          <li>Automated risk remediation via self-service password reset (SSPR) integrated with on-premises writeback</li>
+        </ul>
+
+        <h3>RBAC Redesign</h3>
+        <p>We implemented a least-privilege role assignment model using Privileged Identity Management (PIM):</p>
+        <ul>
+          <li>Reduced permanent Global Administrator assignments from 6 to 2 (break-glass accounts)</li>
+          <li>All other administrative roles converted to PIM-eligible with 8-hour activation windows</li>
+          <li>Activation requires MFA + justification text</li>
+          <li>Approval workflow for Global Admin and Exchange Admin activations</li>
+          <li>Monthly access reviews configured for all privileged roles</li>
+        </ul>
+
+        <!-- Implementation -->
+        <h2>5. Implementation</h2>
+        <p>The implementation was executed over six weeks in four phases:</p>
+
+        <h3>Phase 1 — MFA Rollout (Week 1–2)</h3>
+        <ul>
+          <li>Enabled combined security information registration in Azure AD</li>
+          <li>Configured Microsoft Authenticator as the primary MFA method with FIDO2 security keys as backup for executives</li>
+          <li>Deployed MFA registration campaign using Conditional Access in report-only mode to identify users who had not yet registered</li>
+          <li>Provided department-by-department registration support with a 10-day enrollment window</li>
+          <li>Achieved 98% MFA registration coverage before enforcing policies</li>
+        </ul>
+
+        <h3>Phase 2 — Conditional Access Deployment (Week 3–4)</h3>
+        <ul>
+          <li>Deployed all Tier 1 and Tier 2 policies in report-only mode</li>
+          <li>Analyzed sign-in logs over 5 business days to identify legitimate workflows that would be impacted</li>
+          <li>Identified and remediated 3 legacy applications using basic authentication — migrated to modern auth via app registration updates</li>
+          <li>Defined named locations for office IP ranges and VPN egress points</li>
+          <li>Switched all policies from report-only to enforced after validation</li>
+        </ul>
+
+        <h3>Phase 3 — PIM &amp; RBAC Remediation (Week 5)</h3>
+        <ul>
+          <li>Inventoried all Azure AD role assignments using Microsoft Graph PowerShell</li>
+          <li>Removed 4 unnecessary permanent Global Admin assignments</li>
+          <li>Configured PIM for 12 directory roles with role-specific activation settings</li>
+          <li>Created 2 break-glass accounts with monitored sign-in alerts</li>
+          <li>Configured access reviews for all privileged roles on a 30-day cycle</li>
+        </ul>
+
+        <h3>Phase 4 — Identity Protection &amp; Cleanup (Week 6)</h3>
+        <ul>
+          <li>Enabled Azure AD Identity Protection risk policies (sign-in risk + user risk)</li>
+          <li>Configured SSPR with on-premises password writeback</li>
+          <li>Audited and removed 23 stale guest accounts</li>
+          <li>Configured external collaboration settings to restrict guest invitations to specific admin roles</li>
+          <li>Delivered runbook documentation and conducted a 2-hour knowledge transfer session with the client's IT team</li>
+        </ul>
+
+        <!-- Tools Used -->
+        <h2>6. Tools Used</h2>
+        <div class="cs-tools-grid">
+          <span class="cs-tool">Azure Active Directory (Entra ID)</span>
+          <span class="cs-tool">Conditional Access</span>
+          <span class="cs-tool">Privileged Identity Management</span>
+          <span class="cs-tool">Azure AD Identity Protection</span>
+          <span class="cs-tool">Microsoft Authenticator</span>
+          <span class="cs-tool">FIDO2 Security Keys</span>
+          <span class="cs-tool">Azure AD Connect</span>
+          <span class="cs-tool">Microsoft Graph PowerShell</span>
+          <span class="cs-tool">Azure AD Application Proxy</span>
+          <span class="cs-tool">Microsoft Intune</span>
+        </div>
+
+        <!-- Outcome -->
+        <h2>7. Outcome</h2>
+        <div class="outcome-grid">
+          <div class="outcome-card">
+            <div class="metric">100%</div>
+            <div class="label">MFA Coverage</div>
+          </div>
+          <div class="outcome-card">
+            <div class="metric">14→2</div>
+            <div class="label">Permanent Privileged Roles</div>
+          </div>
+          <div class="outcome-card">
+            <div class="metric">23</div>
+            <div class="label">Stale Guests Removed</div>
+          </div>
+          <div class="outcome-card">
+            <div class="metric">0</div>
+            <div class="label">Legacy Auth Protocols Active</div>
+          </div>
+        </div>
+        <ul>
+          <li>All compliance audit findings related to identity were remediated within the 90-day window.</li>
+          <li>Legacy authentication was fully blocked with zero production impact after the migration to modern auth.</li>
+          <li>Privileged access is now governed by PIM with time-bound activation, MFA, and justification requirements.</li>
+          <li>Risk-based Conditional Access policies automatically remediate compromised credentials without helpdesk intervention.</li>
+          <li>The client passed their subsequent SOC 2 Type II audit with no identity-related findings.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid var(--color-border); max-width: 820px; margin: 0 auto;">
+
+  <!-- ================================================================
+       CASE STUDY 2 — SIEM Deployment with Wazuh & Splunk
+       ================================================================ -->
+  <section id="cs-siem" class="section">
+    <div class="container">
+      <div class="cs-body">
+        <span class="cs-card-tag security" style="margin-bottom: 1.5rem;">Security Monitoring</span>
+        <h1 style="font-size: 2rem; margin-bottom: .5rem;">SIEM Deployment with Wazuh &amp; Splunk</h1>
+        <div class="cs-meta">
+          <span>&#128197; Duration: 8 weeks</span>
+          <span>&#128421; Scope: 150+ endpoints</span>
+          <span>&#127973; Industry: Healthcare</span>
+        </div>
+
+        <!-- Client Background -->
+        <h2>1. Client Background</h2>
+        <p>The client is a regional healthcare organization operating a network of outpatient clinics and a central administrative office. Their IT environment consisted of approximately 150 endpoints (Windows workstations and servers), 12 Linux servers hosting internal applications and databases, and network infrastructure including Cisco switches and Palo Alto firewalls. The organization was subject to HIPAA compliance requirements and had recently engaged a third-party risk assessor who identified the absence of centralized security monitoring as a critical gap.</p>
+        <p>Prior to the engagement, the client had no SIEM, no centralized log collection, and no formalized incident detection or response procedures. Security events were reviewed ad hoc — typically only after an incident had already been reported by end users.</p>
+
+        <!-- Problem -->
+        <h2>2. Problem</h2>
+        <ul>
+          <li>No centralized log aggregation — logs were stored locally on individual systems with inconsistent retention periods ranging from 7 days to 90 days.</li>
+          <li>No real-time alerting for security events. Failed authentication attempts, privilege escalations, and malware detections were not surfaced to the IT team.</li>
+          <li>No file integrity monitoring (FIM) on servers handling electronic protected health information (ePHI).</li>
+          <li>No correlation between endpoint events, network events, and application logs — making lateral movement detection impossible.</li>
+          <li>The HIPAA risk assessment specifically cited the lack of audit controls (§164.312(b)) and the inability to produce audit trails for access to ePHI systems.</li>
+          <li>The client's cyber liability insurance provider flagged the absence of SIEM as a policy renewal risk.</li>
+        </ul>
+
+        <!-- Technical Environment -->
+        <h2>3. Technical Environment</h2>
+        <ul>
+          <li><strong>Endpoints:</strong> 120 Windows 10/11 workstations, 18 Windows Server 2019/2022 instances</li>
+          <li><strong>Linux Servers:</strong> 12 Ubuntu 22.04 LTS servers (web applications, PostgreSQL databases, SFTP)</li>
+          <li><strong>Network:</strong> Cisco Catalyst switches, Palo Alto PA-820 firewalls (2 sites)</li>
+          <li><strong>EHR System:</strong> On-premises electronic health record system running on Windows Server with SQL Server backend</li>
+          <li><strong>Authentication:</strong> On-premises Active Directory (single domain)</li>
+          <li><strong>Antivirus:</strong> Microsoft Defender for Endpoint (partially deployed)</li>
+          <li><strong>Backup:</strong> Veeam Backup &amp; Replication</li>
+        </ul>
+
+        <!-- Architecture -->
+        <h2>4. Architecture</h2>
+        <p>We designed a dual-platform SIEM architecture using Wazuh for endpoint detection and file integrity monitoring, and Splunk for log aggregation, correlation, and dashboarding. The architecture was purpose-built to separate detection from analysis — allowing each platform to do what it does best.</p>
+
+        <h3>Wazuh Architecture</h3>
+        <ul>
+          <li><strong>Wazuh Manager:</strong> Single-node deployment on Ubuntu 22.04 (8 vCPU, 16 GB RAM, 500 GB SSD) hosted on-premises in the primary data center</li>
+          <li><strong>Wazuh Agents:</strong> Deployed to all 150+ endpoints (Windows and Linux) via GPO (Windows) and Ansible (Linux)</li>
+          <li><strong>Capabilities Enabled:</strong> File integrity monitoring, rootkit detection, Security Configuration Assessment (SCA), vulnerability detection, active response</li>
+          <li><strong>Integration:</strong> Wazuh alerts forwarded to Splunk via syslog (CEF format) for correlation and long-term storage</li>
+        </ul>
+
+        <h3>Splunk Architecture</h3>
+        <ul>
+          <li><strong>Splunk Enterprise:</strong> Single indexer deployment on dedicated hardware (16 vCPU, 32 GB RAM, 2 TB NVMe) with a 90-day hot/warm retention and 365-day cold retention</li>
+          <li><strong>Universal Forwarders:</strong> Deployed to all Windows servers for Windows Event Log forwarding (Security, System, Application, PowerShell Script Block logs)</li>
+          <li><strong>Network Log Sources:</strong> Palo Alto firewalls configured to send syslog (traffic, threat, URL filtering) to Splunk via Heavy Forwarder</li>
+          <li><strong>Splunk Apps Installed:</strong> Splunk Security Essentials, Palo Alto Networks App for Splunk, Wazuh App for Splunk</li>
+        </ul>
+
+        <h3>Log Flow</h3>
+        <pre><code>Endpoints (Wazuh Agents) ──→ Wazuh Manager ──→ Syslog (CEF) ──→ Splunk
+Windows Servers (UF) ──────────────────────────────────────────→ Splunk
+Palo Alto Firewalls ──→ Heavy Forwarder ───────────────────────→ Splunk
+Linux Servers (rsyslog) ───────────────────────────────────────→ Splunk
+Active Directory (WEF) ──→ Windows Event Collector ──→ UF ────→ Splunk</code></pre>
+
+        <!-- Implementation -->
+        <h2>5. Implementation</h2>
+
+        <h3>Phase 1 — Infrastructure Build (Week 1–2)</h3>
+        <ul>
+          <li>Provisioned and hardened the Wazuh manager server (CIS Ubuntu benchmark applied)</li>
+          <li>Installed and configured Splunk Enterprise with defined indexes: <code>wazuh</code>, <code>wineventlog</code>, <code>pan_firewall</code>, <code>linux_syslog</code></li>
+          <li>Configured TLS encryption for all agent-manager and forwarder-indexer communication</li>
+          <li>Established syslog relay from Wazuh manager to Splunk Heavy Forwarder</li>
+        </ul>
+
+        <h3>Phase 2 — Agent Deployment (Week 3–4)</h3>
+        <ul>
+          <li>Deployed Wazuh agents to Windows endpoints via Group Policy software installation (MSI package)</li>
+          <li>Deployed Wazuh agents to Linux servers via Ansible playbook with registration key automation</li>
+          <li>Deployed Splunk Universal Forwarders to all Windows servers via GPO</li>
+          <li>Configured Windows Event Forwarding (WEF) to centralize domain controller logs</li>
+          <li>Configured rsyslog on Linux servers to forward auth.log, syslog, and application logs to Splunk</li>
+        </ul>
+
+        <h3>Phase 3 — Detection Engineering (Week 5–6)</h3>
+        <ul>
+          <li>Configured Wazuh FIM rules for critical paths: EHR application directories, database data files, system binaries, and configuration files</li>
+          <li>Enabled Wazuh SCA policies: CIS Windows Server 2019, CIS Ubuntu 22.04, PCI DSS</li>
+          <li>Built 24 custom Splunk alerts mapped to MITRE ATT&amp;CK techniques:
+            <ul>
+              <li>Brute force detection (T1110) — 10+ failed logons in 5 minutes from single source</li>
+              <li>Privilege escalation (T1078) — non-admin account added to Domain Admins</li>
+              <li>Lateral movement (T1021) — RDP sessions from non-standard source hosts</li>
+              <li>Data exfiltration (T1048) — outbound data transfers exceeding 500 MB to external IPs</li>
+              <li>PowerShell abuse (T1059.001) — encoded command execution or download cradles</li>
+            </ul>
+          </li>
+          <li>Configured Wazuh active response to automatically block source IPs after 5 failed SSH attempts on Linux servers</li>
+        </ul>
+
+        <h3>Phase 4 — Dashboarding &amp; Tuning (Week 7–8)</h3>
+        <ul>
+          <li>Built 6 Splunk dashboards: Security Overview, Authentication Activity, Firewall Traffic Analysis, Wazuh Alert Summary, FIM Changes, and Compliance Status</li>
+          <li>Tuned alert thresholds to reduce false positives — iterated through 3 rounds of tuning based on 2 weeks of production data</li>
+          <li>Configured email and webhook alerting for critical and high-severity events</li>
+          <li>Documented 8 incident response playbooks covering the most common alert types</li>
+          <li>Conducted tabletop exercise with the client's IT team using simulated alert scenarios</li>
+        </ul>
+
+        <!-- Tools Used -->
+        <h2>6. Tools Used</h2>
+        <div class="cs-tools-grid">
+          <span class="cs-tool">Wazuh 4.x</span>
+          <span class="cs-tool">Splunk Enterprise</span>
+          <span class="cs-tool">Splunk Universal Forwarder</span>
+          <span class="cs-tool">Splunk Heavy Forwarder</span>
+          <span class="cs-tool">Palo Alto Syslog</span>
+          <span class="cs-tool">Windows Event Forwarding</span>
+          <span class="cs-tool">rsyslog</span>
+          <span class="cs-tool">Ansible</span>
+          <span class="cs-tool">Group Policy (GPO)</span>
+          <span class="cs-tool">MITRE ATT&amp;CK Framework</span>
+        </div>
+
+        <!-- Outcome -->
+        <h2>7. Outcome</h2>
+        <div class="outcome-grid">
+          <div class="outcome-card">
+            <div class="metric">150+</div>
+            <div class="label">Endpoints Monitored</div>
+          </div>
+          <div class="outcome-card">
+            <div class="metric">24</div>
+            <div class="label">Detection Rules Deployed</div>
+          </div>
+          <div class="outcome-card">
+            <div class="metric">365 days</div>
+            <div class="label">Log Retention</div>
+          </div>
+          <div class="outcome-card">
+            <div class="metric">&lt; 5 min</div>
+            <div class="label">Alert-to-Notification Time</div>
+          </div>
+        </div>
+        <ul>
+          <li>The client achieved full HIPAA audit control compliance (§164.312(b)) with centralized, tamper-evident log storage and defined retention policies.</li>
+          <li>File integrity monitoring on ePHI systems provided audit trails required for breach notification assessments.</li>
+          <li>Within the first 30 days of production, the SIEM detected and alerted on 3 legitimate security events: a compromised vendor VPN credential, a misconfigured service account with interactive logon, and an unauthorized software installation on a clinic workstation.</li>
+          <li>The cyber liability insurance renewal was approved without the SIEM-related exception.</li>
+          <li>The client's IT team was trained to triage alerts and execute playbooks independently within 4 weeks of go-live.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid var(--color-border); max-width: 820px; margin: 0 auto;">
+
+  <!-- ================================================================
+       CASE STUDY 3 — Active Directory Hardening
+       ================================================================ -->
+  <section id="cs-ad" class="section">
+    <div class="container">
+      <div class="cs-body">
+        <span class="cs-card-tag infra" style="margin-bottom: 1.5rem;">Infrastructure</span>
+        <h1 style="font-size: 2rem; margin-bottom: .5rem;">Active Directory Hardening</h1>
+        <div class="cs-meta">
+          <span>&#128197; Duration: 5 weeks</span>
+          <span>&#128101; Scope: 500-user domain</span>
+          <span>&#127981; Industry: Manufacturing</span>
+        </div>
+
+        <!-- Client Background -->
+        <h2>1. Client Background</h2>
+        <p>The client is a mid-sized manufacturing company with approximately 500 employees across a primary headquarters, two production facilities, and a distribution warehouse. Their IT infrastructure was anchored by a single Active Directory forest that had been in continuous operation since Windows Server 2008, having been upgraded in place through Server 2012 R2 and most recently to Server 2016. The domain functional level had been raised to 2016, but many legacy configurations, GPOs, and permission structures remained from earlier versions.</p>
+        <p>The company had recently engaged a cybersecurity firm for a penetration test as part of a customer compliance requirement. The pentest results revealed multiple critical findings in the Active Directory environment that required immediate remediation.</p>
+
+        <!-- Problem -->
+        <h2>2. Problem</h2>
+        <p>The penetration test identified the following Active Directory security findings:</p>
+        <ul>
+          <li><strong>Weak Password Policies:</strong> The Default Domain Policy enforced a minimum password length of 8 characters with no complexity requirements. The password history was set to 3, and the maximum password age was 180 days.</li>
+          <li><strong>Excessive Privileged Access:</strong> 34 accounts were members of Domain Admins, including 12 service accounts and 8 accounts belonging to employees who had changed roles or left the company.</li>
+          <li><strong>No Local Administrator Password Management:</strong> All workstations shared the same local administrator password, which was set via a GPO preference (recoverable from SYSVOL in cleartext).</li>
+          <li><strong>No Audit Logging:</strong> Advanced audit policies were not configured. Domain controller security event logs were set to a maximum size of 20 MB with overwrite-as-needed, resulting in less than 48 hours of audit trail.</li>
+          <li><strong>Legacy Protocols:</strong> NTLMv1 authentication was permitted, and SMBv1 was enabled on domain controllers.</li>
+          <li><strong>GPO Sprawl:</strong> 87 Group Policy Objects existed in the domain, many with conflicting settings, broken WMI filters, or no linked OUs. No GPO documentation existed.</li>
+          <li><strong>Kerberoastable Accounts:</strong> 9 service accounts had SPNs registered with weak passwords, making them vulnerable to Kerberoasting attacks.</li>
+        </ul>
+
+        <!-- Technical Environment -->
+        <h2>3. Technical Environment</h2>
+        <ul>
+          <li><strong>Domain Controllers:</strong> 4 DCs running Windows Server 2016 (2 at HQ, 1 per remote site)</li>
+          <li><strong>Domain Functional Level:</strong> Windows Server 2016</li>
+          <li><strong>Forest:</strong> Single forest, single domain</li>
+          <li><strong>User Accounts:</strong> ~500 user accounts, ~45 service accounts</li>
+          <li><strong>Workstations:</strong> ~400 Windows 10/11 domain-joined machines</li>
+          <li><strong>Servers:</strong> 28 Windows Server instances (file servers, print servers, application servers, SQL servers)</li>
+          <li><strong>Sites and Services:</strong> 3 AD sites with inter-site replication</li>
+          <li><strong>DNS:</strong> AD-integrated DNS zones</li>
+          <li><strong>DHCP:</strong> Windows DHCP with failover between HQ DCs</li>
+        </ul>
+
+        <!-- Architecture -->
+        <h2>4. Architecture</h2>
+        <p>We designed a hardening plan organized into five workstreams, each aligned to CIS Microsoft Windows Server 2016 Benchmark recommendations and Microsoft's tiered administration model:</p>
+
+        <h3>Workstream 1 — Password Policy Overhaul</h3>
+        <ul>
+          <li>Implement fine-grained password policies (PSOs) for three user tiers:
+            <ul>
+              <li><strong>Standard Users:</strong> 14-character minimum, complexity enabled, 90-day max age, 24 password history</li>
+              <li><strong>Privileged Accounts:</strong> 20-character minimum, 60-day max age, 24 password history</li>
+              <li><strong>Service Accounts:</strong> 30-character managed passwords via group Managed Service Accounts (gMSAs)</li>
+            </ul>
+          </li>
+          <li>Deploy Azure AD Password Protection on-premises agents to block known-weak and organization-specific banned passwords</li>
+        </ul>
+
+        <h3>Workstream 2 — Privileged Access Remediation</h3>
+        <ul>
+          <li>Audit all privileged group memberships (Domain Admins, Enterprise Admins, Schema Admins, Administrators, Account Operators, Backup Operators)</li>
+          <li>Implement tiered administration: Tier 0 (domain controllers and identity systems), Tier 1 (member servers), Tier 2 (workstations)</li>
+          <li>Create dedicated admin accounts for each tier — no single account with cross-tier access</li>
+          <li>Deploy Protected Users security group for all Tier 0 accounts</li>
+        </ul>
+
+        <h3>Workstream 3 — LAPS Deployment</h3>
+        <ul>
+          <li>Deploy Microsoft LAPS to all domain-joined workstations and member servers</li>
+          <li>Configure unique, randomly generated local administrator passwords with 30-day rotation</li>
+          <li>Restrict LAPS password read access to designated helpdesk and server admin groups</li>
+          <li>Remove the legacy GPO preference that set a static local admin password</li>
+        </ul>
+
+        <h3>Workstream 4 — Audit Policy &amp; Monitoring</h3>
+        <ul>
+          <li>Configure Advanced Audit Policy via GPO with settings aligned to Microsoft's recommended baseline:
+            <ul>
+              <li>Account Logon: Credential Validation (Success/Failure)</li>
+              <li>Logon/Logoff: Logon, Logoff, Special Logon (Success/Failure)</li>
+              <li>Object Access: File System, Registry, SAM (Failure)</li>
+              <li>Privilege Use: Sensitive Privilege Use (Success/Failure)</li>
+              <li>Account Management: All subcategories (Success/Failure)</li>
+              <li>DS Access: Directory Service Changes (Success)</li>
+              <li>Policy Change: Audit Policy Change, Authentication Policy Change (Success)</li>
+            </ul>
+          </li>
+          <li>Increase Security event log to 1 GB with archive-when-full retention</li>
+          <li>Configure Windows Event Forwarding to centralize DC logs to a dedicated collector</li>
+        </ul>
+
+        <h3>Workstream 5 — Protocol Hardening &amp; GPO Cleanup</h3>
+        <ul>
+          <li>Disable NTLMv1: set LAN Manager authentication level to "Send NTLMv2 response only. Refuse LM &amp; NTLM"</li>
+          <li>Disable SMBv1 on all domain controllers and member servers</li>
+          <li>Enable LDAP signing and LDAP channel binding on domain controllers</li>
+          <li>Audit and rationalize GPO inventory: document, consolidate, and remove orphaned GPOs</li>
+        </ul>
+
+        <!-- Implementation -->
+        <h2>5. Implementation</h2>
+
+        <h3>Week 1 — Assessment &amp; Documentation</h3>
+        <ul>
+          <li>Ran <code>Get-ADGroupMember</code> recursively against all privileged groups and exported membership reports</li>
+          <li>Exported all 87 GPOs to HTML reports using <code>Get-GPOReport</code> and documented their link status, WMI filters, and effective settings</li>
+          <li>Ran <code>Get-ADUser -Filter * -Properties PasswordLastSet,PasswordNeverExpires</code> to identify password hygiene issues</li>
+          <li>Identified all accounts with SPNs using <code>Get-ADUser -Filter {ServicePrincipalName -ne "$null"}</code></li>
+          <li>Documented all findings in a remediation tracker with risk ratings and implementation dependencies</li>
+        </ul>
+
+        <h3>Week 2 — Password Policies &amp; Service Account Migration</h3>
+        <ul>
+          <li>Created fine-grained password policies (PSOs) for Standard Users, Privileged Accounts, and Service Accounts</li>
+          <li>Migrated 9 Kerberoastable service accounts to gMSAs — updated service configurations on dependent servers</li>
+          <li>Deployed Azure AD Password Protection proxy and DC agents — configured custom banned password list with 45 organization-specific terms</li>
+          <li>Forced password reset for all accounts that had not changed passwords in >90 days (communicated via a staged 2-week rollout per department)</li>
+        </ul>
+
+        <h3>Week 3 — Privileged Access &amp; LAPS</h3>
+        <ul>
+          <li>Removed 22 accounts from Domain Admins (8 departed employees, 12 service accounts migrated to gMSAs, 2 helpdesk accounts moved to appropriate delegated groups)</li>
+          <li>Created tiered admin accounts: <code>t0-admin-[name]</code>, <code>t1-admin-[name]</code>, <code>t2-admin-[name]</code></li>
+          <li>Deployed LAPS via GPO to all workstation and server OUs — validated password generation on 10% of devices before full rollout</li>
+          <li>Removed the legacy GPO preference with the static local admin password and verified SYSVOL cleanup</li>
+        </ul>
+
+        <h3>Week 4 — Audit Policies &amp; Protocol Hardening</h3>
+        <ul>
+          <li>Deployed Advanced Audit Policy GPO linked to Domain Controllers OU and member server OUs</li>
+          <li>Configured Windows Event Forwarding: DCs forward Security logs to a dedicated Windows Event Collector server</li>
+          <li>Disabled NTLMv1 in a staged rollout — first in report-only mode via network logon audit, then enforced after verifying no NTLMv1 dependencies</li>
+          <li>Disabled SMBv1 on all servers via GPO — confirmed no legacy dependencies via <code>Get-SmbServerConfiguration</code></li>
+          <li>Enabled LDAP signing (required) and channel binding (supported) on domain controllers</li>
+        </ul>
+
+        <h3>Week 5 — GPO Cleanup &amp; Documentation</h3>
+        <ul>
+          <li>Consolidated 87 GPOs down to 34 — removed 38 unlinked GPOs, merged 15 overlapping GPOs</li>
+          <li>Documented every remaining GPO with purpose, linked OUs, key settings, and responsible owner</li>
+          <li>Delivered hardening documentation: password policy reference, privileged access model, LAPS operations guide, audit policy baseline, and protocol configuration reference</li>
+          <li>Conducted 3-hour knowledge transfer session with the client's infrastructure team</li>
+        </ul>
+
+        <!-- Tools Used -->
+        <h2>6. Tools Used</h2>
+        <div class="cs-tools-grid">
+          <span class="cs-tool">Active Directory</span>
+          <span class="cs-tool">Group Policy (GPO)</span>
+          <span class="cs-tool">Fine-Grained Password Policies</span>
+          <span class="cs-tool">Microsoft LAPS</span>
+          <span class="cs-tool">Azure AD Password Protection</span>
+          <span class="cs-tool">gMSA (Group Managed Service Accounts)</span>
+          <span class="cs-tool">PowerShell</span>
+          <span class="cs-tool">Windows Event Forwarding</span>
+          <span class="cs-tool">Advanced Audit Policy</span>
+          <span class="cs-tool">CIS Benchmarks</span>
+        </div>
+
+        <!-- Outcome -->
+        <h2>7. Outcome</h2>
+        <div class="outcome-grid">
+          <div class="outcome-card">
+            <div class="metric">34→12</div>
+            <div class="label">Domain Admin Members</div>
+          </div>
+          <div class="outcome-card">
+            <div class="metric">87→34</div>
+            <div class="label">GPOs Rationalized</div>
+          </div>
+          <div class="outcome-card">
+            <div class="metric">0</div>
+            <div class="label">Kerberoastable Accounts</div>
+          </div>
+          <div class="outcome-card">
+            <div class="metric">100%</div>
+            <div class="label">LAPS Coverage</div>
+          </div>
+        </div>
+        <ul>
+          <li>All penetration test findings were remediated and verified through a follow-up retest that produced zero critical or high findings in the AD environment.</li>
+          <li>NTLMv1 and SMBv1 were fully eliminated from the domain with no production impact.</li>
+          <li>The tiered administration model prevents lateral movement from workstation compromise to domain controller access.</li>
+          <li>LAPS eliminated the shared local administrator password — the single most commonly exploited finding in enterprise pentest engagements.</li>
+          <li>Advanced audit policies and centralized log forwarding provide the audit trail required for the client's customer compliance obligations.</li>
+          <li>The client's GPO environment is now documented, maintainable, and reduced in complexity by 61%.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid var(--color-border); max-width: 820px; margin: 0 auto;">
+
+  <!-- ================================================================
+       CASE STUDY 4 — Linux Server Hardening & Automation
+       ================================================================ -->
+  <section id="cs-linux" class="section">
+    <div class="container">
+      <div class="cs-body">
+        <span class="cs-card-tag linux" style="margin-bottom: 1.5rem;">Linux Administration</span>
+        <h1 style="font-size: 2rem; margin-bottom: .5rem;">Linux Server Hardening &amp; Automation</h1>
+        <div class="cs-meta">
+          <span>&#128197; Duration: 4 weeks</span>
+          <span>&#128421; Scope: 40 servers</span>
+          <span>&#128640; Industry: SaaS / Technology</span>
+        </div>
+
+        <!-- Client Background -->
+        <h2>1. Client Background</h2>
+        <p>The client is a B2B SaaS company that operates a customer-facing platform hosted across a fleet of 40 Linux servers. The infrastructure consists of a mix of Ubuntu 22.04 LTS and Red Hat Enterprise Linux 8 servers running across two data centers and an AWS VPC. The server fleet includes web application servers (Nginx), application servers (Node.js and Python), PostgreSQL database servers, Redis cache servers, and internal tooling servers.</p>
+        <p>The company had scaled rapidly over the previous 18 months, growing from 8 servers to 40. Server provisioning had been performed manually by different engineers without a standardized hardening baseline. The company's SOC 2 Type II audit preparation identified server hardening and log monitoring as areas requiring immediate improvement.</p>
+
+        <!-- Problem -->
+        <h2>2. Problem</h2>
+        <ul>
+          <li><strong>No Hardening Baseline:</strong> Each server had been configured independently. SSH configurations varied across the fleet — some permitted root login, some allowed password authentication, and port numbers were inconsistent.</li>
+          <li><strong>Inconsistent Firewall Rules:</strong> Some servers ran <code>iptables</code>, some ran <code>firewalld</code>, and 6 servers had no host-based firewall configured at all. Rules were not documented.</li>
+          <li><strong>No Centralized Logging:</strong> Application logs were stored locally with no forwarding. Auth logs, syslog, and audit logs were not aggregated — making incident investigation across servers impractical.</li>
+          <li><strong>No File Integrity Monitoring:</strong> No mechanism existed to detect unauthorized changes to system binaries, configuration files, or application code on production servers.</li>
+          <li><strong>Unpatched Systems:</strong> 14 servers had not been patched in over 120 days. No patch management schedule or process existed.</li>
+          <li><strong>No Audit Logging:</strong> <code>auditd</code> was installed but not configured on any server. No syscall monitoring was in place for privilege escalation, file access, or process execution events.</li>
+          <li><strong>Excessive Sudo Access:</strong> 11 user accounts had unrestricted <code>NOPASSWD: ALL</code> sudo access. No sudo logging was configured.</li>
+        </ul>
+
+        <!-- Technical Environment -->
+        <h2>3. Technical Environment</h2>
+        <ul>
+          <li><strong>Operating Systems:</strong> 24 servers running Ubuntu 22.04 LTS, 16 servers running RHEL 8</li>
+          <li><strong>Cloud/Hosting:</strong> 28 servers in AWS (EC2), 12 servers in a colocation data center</li>
+          <li><strong>Server Roles:</strong>
+            <ul>
+              <li>8 Nginx reverse proxy / web servers</li>
+              <li>12 application servers (Node.js, Python/Gunicorn)</li>
+              <li>6 PostgreSQL database servers (primary + replicas)</li>
+              <li>4 Redis cache servers</li>
+              <li>4 internal tooling / CI-CD runners</li>
+              <li>4 monitoring and log aggregation servers</li>
+              <li>2 bastion / jump servers</li>
+            </ul>
+          </li>
+          <li><strong>Configuration Management:</strong> None (all manual provisioning)</li>
+          <li><strong>Monitoring:</strong> Prometheus + Grafana for performance metrics (no security monitoring)</li>
+          <li><strong>SSH Access:</strong> Key-based for most servers, with 8 servers still permitting password authentication</li>
+        </ul>
+
+        <!-- Architecture -->
+        <h2>4. Architecture</h2>
+        <p>We designed a hardening and monitoring architecture with three components: an automated hardening toolkit (Bash), centralized log aggregation (rsyslog + Splunk), and audit monitoring (auditd).</p>
+
+        <h3>Hardening Automation</h3>
+        <p>We developed a modular Bash hardening toolkit that could be executed on both Ubuntu and RHEL systems. The toolkit was organized into discrete modules, each addressing a specific CIS Benchmark control area:</p>
+        <pre><code>harden.sh
+├── modules/
+│   ├── 01-ssh-hardening.sh
+│   ├── 02-firewall-config.sh
+│   ├── 03-user-access.sh
+│   ├── 04-kernel-params.sh
+│   ├── 05-filesystem.sh
+│   ├── 06-auditd-config.sh
+│   ├── 07-logging.sh
+│   ├── 08-services.sh
+│   └── 09-patch-management.sh
+├── configs/
+│   ├── sshd_config.hardened
+│   ├── audit.rules
+│   ├── rsyslog.conf
+│   └── iptables.rules.[role]
+├── lib/
+│   ├── detect-os.sh
+│   └── logger.sh
+└── reports/
+    └── compliance-check.sh</code></pre>
+
+        <h3>Centralized Logging Architecture</h3>
+        <ul>
+          <li>All servers forward logs via rsyslog over TLS to a centralized log aggregation server</li>
+          <li>Log aggregation server runs Splunk Universal Forwarder, indexing to a Splunk instance</li>
+          <li>Log sources: auth.log / secure, syslog, audit.log, sudo.log, application logs</li>
+          <li>Retention: 90 days online, 365 days archived to S3</li>
+        </ul>
+
+        <h3>Auditd Configuration</h3>
+        <p>We deployed a comprehensive <code>auditd</code> ruleset monitoring:</p>
+        <ul>
+          <li>All executions of privileged commands (<code>sudo</code>, <code>su</code>, <code>passwd</code>, <code>chsh</code>)</li>
+          <li>Modifications to <code>/etc/passwd</code>, <code>/etc/shadow</code>, <code>/etc/group</code>, <code>/etc/sudoers</code></li>
+          <li>File permission changes on critical directories</li>
+          <li>Kernel module loading and unloading</li>
+          <li>Network configuration changes</li>
+          <li>All unsuccessful file access attempts (EACCES, EPERM)</li>
+        </ul>
+
+        <!-- Implementation -->
+        <h2>5. Implementation</h2>
+
+        <h3>Week 1 — Assessment &amp; Toolkit Development</h3>
+        <ul>
+          <li>Ran CIS benchmark assessment on a representative sample (2 Ubuntu, 2 RHEL) — documented baseline compliance scores (Ubuntu: 38%, RHEL: 42%)</li>
+          <li>Inventoried all SSH configurations, firewall rules, user accounts, sudo privileges, and running services across all 40 servers</li>
+          <li>Developed the modular hardening toolkit with OS detection (Ubuntu vs. RHEL) and dry-run capability</li>
+          <li>Tested toolkit against non-production servers in a staging environment</li>
+        </ul>
+
+        <h3>Week 2 — SSH &amp; Access Hardening</h3>
+        <ul>
+          <li>Deployed standardized SSH configuration across all 40 servers:
+            <pre><code># /etc/ssh/sshd_config — hardened baseline
+PermitRootLogin no
+PasswordAuthentication no
+PubkeyAuthentication yes
+MaxAuthTries 3
+ClientAliveInterval 300
+ClientAliveCountMax 2
+X11Forwarding no
+AllowTcpForwarding no
+Banner /etc/issue.net
+Protocol 2
+Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
+KexAlgorithms curve25519-sha256,diffie-hellman-group16-sha512</code></pre>
+          </li>
+          <li>Consolidated SSH access through 2 bastion hosts — direct SSH access to production servers removed from security groups / firewall rules</li>
+          <li>Remediated sudo access: replaced 11 <code>NOPASSWD: ALL</code> entries with role-specific command allowlists</li>
+          <li>Enabled sudo logging to <code>/var/log/sudo.log</code> with <code>Defaults logfile</code> directive</li>
+          <li>Removed 7 dormant user accounts that had not logged in within 90 days</li>
+        </ul>
+
+        <h3>Week 3 — Firewall, Kernel &amp; Service Hardening</h3>
+        <ul>
+          <li>Standardized all servers on <code>iptables</code> with role-specific rulesets (web server, app server, database server, bastion)</li>
+          <li>Default policy: DROP on INPUT and FORWARD, ACCEPT on OUTPUT with explicit allowlists per server role</li>
+          <li>Applied kernel hardening parameters via <code>/etc/sysctl.d/99-hardening.conf</code>:
+            <pre><code># Network hardening
+net.ipv4.ip_forward = 0
+net.ipv4.conf.all.send_redirects = 0
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv4.conf.all.accept_source_route = 0
+net.ipv4.conf.all.log_martians = 1
+net.ipv4.icmp_echo_ignore_broadcasts = 1
+net.ipv4.tcp_syncookies = 1
+
+# Kernel hardening
+kernel.randomize_va_space = 2
+kernel.dmesg_restrict = 1
+kernel.kptr_restrict = 2
+fs.suid_dumpable = 0</code></pre>
+          </li>
+          <li>Disabled 14 unnecessary services across the fleet (cups, avahi-daemon, rpcbind, telnet, etc.)</li>
+          <li>Mounted <code>/tmp</code>, <code>/var/tmp</code>, and <code>/dev/shm</code> with <code>noexec,nosuid,nodev</code> options</li>
+        </ul>
+
+        <h3>Week 4 — Logging, Auditing &amp; Compliance Validation</h3>
+        <ul>
+          <li>Deployed and configured <code>auditd</code> on all 40 servers with the standardized ruleset</li>
+          <li>Configured rsyslog TLS forwarding to the centralized log server — verified log receipt from all 40 hosts</li>
+          <li>Applied all pending security patches — 14 servers required kernel updates (scheduled during maintenance window with rolling restarts)</li>
+          <li>Ran post-hardening CIS benchmark assessment: Ubuntu servers scored 91%, RHEL servers scored 89%</li>
+          <li>Documented all configurations in a server hardening baseline document with per-module explanations</li>
+          <li>Created a compliance check script (<code>compliance-check.sh</code>) that validates hardening state and outputs a pass/fail report per control</li>
+          <li>Delivered runbook to client engineering team and conducted a 2-hour walkthrough of the toolkit, logging architecture, and ongoing maintenance procedures</li>
+        </ul>
+
+        <!-- Tools Used -->
+        <h2>6. Tools Used</h2>
+        <div class="cs-tools-grid">
+          <span class="cs-tool">Bash</span>
+          <span class="cs-tool">auditd</span>
+          <span class="cs-tool">rsyslog</span>
+          <span class="cs-tool">iptables</span>
+          <span class="cs-tool">OpenSSH</span>
+          <span class="cs-tool">sysctl</span>
+          <span class="cs-tool">CIS Benchmarks</span>
+          <span class="cs-tool">Splunk Universal Forwarder</span>
+          <span class="cs-tool">AWS Security Groups</span>
+          <span class="cs-tool">Prometheus / Grafana</span>
+        </div>
+
+        <!-- Outcome -->
+        <h2>7. Outcome</h2>
+        <div class="outcome-grid">
+          <div class="outcome-card">
+            <div class="metric">38%→91%</div>
+            <div class="label">CIS Compliance (Ubuntu)</div>
+          </div>
+          <div class="outcome-card">
+            <div class="metric">42%→89%</div>
+            <div class="label">CIS Compliance (RHEL)</div>
+          </div>
+          <div class="outcome-card">
+            <div class="metric">40/40</div>
+            <div class="label">Servers Hardened</div>
+          </div>
+          <div class="outcome-card">
+            <div class="metric">0</div>
+            <div class="label">NOPASSWD Sudo Entries</div>
+          </div>
+        </div>
+        <ul>
+          <li>All 40 servers now conform to a documented, auditable hardening baseline aligned to CIS Benchmarks Level 1.</li>
+          <li>Centralized logging provides a unified view of authentication, authorization, and system events across the entire fleet.</li>
+          <li>The compliance check script enables the client's engineering team to validate hardening state on any server in under 60 seconds.</li>
+          <li>SSH access is now enforced exclusively through bastion hosts with key-based authentication, eliminating direct exposure of production servers.</li>
+          <li>The modular Bash toolkit is versioned in Git and can be executed against new servers as part of the provisioning process, preventing configuration drift.</li>
+          <li>The client passed their SOC 2 Type II audit with no findings related to server configuration or log management.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CTA ===================== -->
+  <section class="section" style="background: var(--color-bg-alt);">
+    <div class="container" style="text-align:center;">
+      <h2 class="section-title">Have a Similar Challenge?</h2>
+      <p class="section-subtitle" style="margin: 0 auto 2rem;">We scope every engagement based on your specific environment and compliance requirements.</p>
+      <a href="contact.html" class="btn btn-primary">Start a Conversation &rarr;</a>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>Qilestra Tech</h4>
+          <p>Managed IT services and security consulting for mid-market and enterprise organizations. We engineer infrastructure that works.</p>
+        </div>
+        <div>
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="case-studies.html">Case Studies</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Services</h4>
+          <ul>
+            <li><a href="services.html">Azure Infrastructure</a></li>
+            <li><a href="services.html">Identity &amp; Access</a></li>
+            <li><a href="services.html">SIEM &amp; Monitoring</a></li>
+            <li><a href="services.html">Linux Administration</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="blog.html">Blog</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Qilestra Tech. All rights reserved.</p>
+        <p>Built with precision.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

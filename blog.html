@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — Qilestra Tech</title>
+  <meta name="description" content="Technical articles from Qilestra Tech covering Azure infrastructure, identity management, SIEM operations, and Linux administration.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-icon">QT</span>
+        Qilestra Tech
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="case-studies.html">Case Studies</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===================== PAGE HERO ===================== -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-label">Blog</span>
+      <h1>Technical Notes &amp; Field Observations</h1>
+      <p>Practical insights from real engagements — configuration references, architectural decisions, and lessons learned in production environments.</p>
+    </div>
+  </section>
+
+  <!-- ===================== BLOG POSTS ===================== -->
+  <section class="section">
+    <div class="container">
+      <div class="card-grid">
+
+        <!-- Post 1 -->
+        <div class="blog-card fade-in">
+          <div class="meta">
+            <span>March 2026</span>
+            <span>8 min read</span>
+          </div>
+          <h3>Designing Conditional Access Policies That Don't Break Production</h3>
+          <p>Conditional Access is the enforcement engine of Zero Trust identity — but poorly scoped policies can lock out users, break service accounts, and generate a flood of helpdesk tickets. This article walks through a deployment methodology we use on every identity engagement: report-only validation, phased rollout, and the specific policy ordering that prevents the most common production incidents.</p>
+          <p>We cover the baseline policy set we deploy for every client (legacy auth block, MFA enforcement, location-based controls), how to handle service accounts and break-glass scenarios, and the sign-in log queries we use to validate policy impact before switching from report-only to enforced.</p>
+          <div class="tags">
+            <span class="tool-badge">Azure AD</span>
+            <span class="tool-badge">Conditional Access</span>
+            <span class="tool-badge">Zero Trust</span>
+            <span class="tool-badge">Identity</span>
+          </div>
+        </div>
+
+        <!-- Post 2 -->
+        <div class="blog-card fade-in">
+          <div class="meta">
+            <span>February 2026</span>
+            <span>12 min read</span>
+          </div>
+          <h3>Wazuh + Splunk: Architecture Decisions for a Dual-Platform SIEM</h3>
+          <p>Running two SIEM platforms sounds redundant until you understand what each one does well. Wazuh excels at agent-based endpoint detection — file integrity monitoring, rootkit detection, and CIS compliance scanning. Splunk excels at log aggregation, correlation, and dashboarding at scale. This article documents the architecture we deploy when clients need both capabilities without the licensing cost of a single enterprise SIEM that does everything.</p>
+          <p>We cover the integration pattern (Wazuh alerts to Splunk via CEF syslog), how to avoid duplicate alerting, index design in Splunk for multi-source correlation, and the detection rules we build on top of this architecture mapped to MITRE ATT&CK.</p>
+          <div class="tags">
+            <span class="tool-badge">Wazuh</span>
+            <span class="tool-badge">Splunk</span>
+            <span class="tool-badge">SIEM</span>
+            <span class="tool-badge">MITRE ATT&CK</span>
+          </div>
+        </div>
+
+        <!-- Post 3 -->
+        <div class="blog-card fade-in">
+          <div class="meta">
+            <span>January 2026</span>
+            <span>10 min read</span>
+          </div>
+          <h3>The 5 Active Directory Findings We See on Every Pentest Report</h3>
+          <p>After hardening dozens of AD environments, patterns emerge. This article covers the five most common Active Directory security findings we encounter on penetration test reports and how we remediate each one: excessive Domain Admin membership, Kerberoastable service accounts, missing LAPS, disabled audit logging, and NTLMv1 still in use.</p>
+          <p>For each finding, we provide the PowerShell commands to identify the issue, the remediation steps, and the GPO or PSO configuration required to close the gap. These are not theoretical — they are the exact remediations we implement on client engagements.</p>
+          <div class="tags">
+            <span class="tool-badge">Active Directory</span>
+            <span class="tool-badge">Penetration Testing</span>
+            <span class="tool-badge">GPO</span>
+            <span class="tool-badge">PowerShell</span>
+          </div>
+        </div>
+
+        <!-- Post 4 -->
+        <div class="blog-card fade-in">
+          <div class="meta">
+            <span>December 2025</span>
+            <span>9 min read</span>
+          </div>
+          <h3>Building a Modular Linux Hardening Toolkit in Bash</h3>
+          <p>Configuration management tools like Ansible and Puppet are the right choice for large-scale environments, but many of our clients operate server fleets in the 20–50 range where the overhead of a full CM platform isn't justified. For these environments, we've developed a modular Bash hardening toolkit that can be version-controlled, audited, and executed idempotently.</p>
+          <p>This article walks through the architecture of the toolkit — OS detection, module structure, dry-run mode, and compliance reporting — with code samples for SSH hardening, firewall configuration, auditd rules, and kernel parameter tuning. We also cover how we integrate the toolkit into server provisioning workflows.</p>
+          <div class="tags">
+            <span class="tool-badge">Bash</span>
+            <span class="tool-badge">Linux</span>
+            <span class="tool-badge">CIS Benchmarks</span>
+            <span class="tool-badge">Automation</span>
+          </div>
+        </div>
+
+        <!-- Post 5 -->
+        <div class="blog-card fade-in">
+          <div class="meta">
+            <span>November 2025</span>
+            <span>7 min read</span>
+          </div>
+          <h3>Privileged Identity Management: Configuration Decisions That Matter</h3>
+          <p>Azure AD Privileged Identity Management (PIM) is straightforward to enable but requires careful configuration to be operationally effective. Activation duration, approval workflows, MFA requirements, and notification settings all influence whether PIM becomes a security control or a rubber-stamp process.</p>
+          <p>This article documents the PIM configuration decisions we make on identity engagements — why we set 8-hour activation windows for most roles, why Global Admin activations require approval while User Admin activations don't, and how we configure access reviews to catch privilege drift without creating review fatigue.</p>
+          <div class="tags">
+            <span class="tool-badge">PIM</span>
+            <span class="tool-badge">Azure AD</span>
+            <span class="tool-badge">RBAC</span>
+            <span class="tool-badge">Zero Trust</span>
+          </div>
+        </div>
+
+        <!-- Post 6 -->
+        <div class="blog-card fade-in">
+          <div class="meta">
+            <span>October 2025</span>
+            <span>11 min read</span>
+          </div>
+          <h3>auditd Rules for Production Linux Servers: What to Monitor and Why</h3>
+          <p>The Linux audit daemon is one of the most powerful security monitoring tools available on any Linux system — and one of the most underutilized. The default installation monitors almost nothing. This article provides a production-ready auditd ruleset with explanations for each rule category: privileged command execution, identity file modifications, kernel module operations, network configuration changes, and unauthorized file access attempts.</p>
+          <p>We also cover performance considerations (auditd can impact I/O-heavy workloads if configured carelessly), log rotation, and how to forward audit logs to a centralized SIEM via rsyslog.</p>
+          <div class="tags">
+            <span class="tool-badge">auditd</span>
+            <span class="tool-badge">Linux</span>
+            <span class="tool-badge">Security Monitoring</span>
+            <span class="tool-badge">rsyslog</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>Qilestra Tech</h4>
+          <p>Managed IT services and security consulting for mid-market and enterprise organizations. We engineer infrastructure that works.</p>
+        </div>
+        <div>
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="case-studies.html">Case Studies</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Services</h4>
+          <ul>
+            <li><a href="services.html">Azure Infrastructure</a></li>
+            <li><a href="services.html">Identity &amp; Access</a></li>
+            <li><a href="services.html">SIEM &amp; Monitoring</a></li>
+            <li><a href="services.html">Linux Administration</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="blog.html">Blog</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Qilestra Tech. All rights reserved.</p>
+        <p>Built with precision.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
