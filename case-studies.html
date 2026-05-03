@@ -4,10 +4,169 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Case Studies — Qilestra Tech</title>
-  <meta name="description" content="Technical case studies from Qilestra Tech engagements — Azure identity, SIEM deployment, Active Directory hardening, and Linux server automation.">
+  <meta name="description" content="Technical engagements documented end-to-end — from client background through architecture, implementation, and measurable outcomes.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .cs-screenshot {
+      margin: 1.5rem 0;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+    }
+    .cs-screenshot img { width: 100%; display: block; }
+    .cs-screenshot figcaption {
+      background: var(--color-surface-alt);
+      border-top: 1px solid var(--color-border);
+      padding: .6rem 1rem;
+      font-size: .75rem;
+      color: var(--color-text-muted);
+      font-family: var(--font-mono);
+    }
+    .cs-screenshot-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .arch-diagram {
+      background: var(--color-bg-alt);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin: 1.5rem 0;
+      overflow-x: auto;
+    }
+    .arch-diagram h4 {
+      font-size: .75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--color-text-muted);
+      margin-bottom: 1.25rem;
+    }
+    .arch-layer { display: flex; align-items: stretch; gap: .75rem; margin-bottom: .75rem; flex-wrap: wrap; }
+    .arch-label {
+      width: 110px; min-width: 110px;
+      font-size: .72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em;
+      color: var(--color-text-muted);
+      display: flex; align-items: center;
+      font-family: var(--font-mono);
+    }
+    .arch-nodes { display: flex; gap: .6rem; flex-wrap: wrap; flex: 1; }
+    .arch-node {
+      font-size: .75rem; font-weight: 600;
+      padding: .45rem .85rem;
+      border-radius: 5px;
+      font-family: var(--font-mono);
+      white-space: nowrap;
+    }
+    .arch-node.identity { background: rgba(99,102,241,.15);  color: #818cf8; border: 1px solid rgba(99,102,241,.25); }
+    .arch-node.security { background: rgba(239,68,68,.12);   color: #f87171; border: 1px solid rgba(239,68,68,.2); }
+    .arch-node.data     { background: rgba(34,197,94,.12);   color: #4ade80; border: 1px solid rgba(34,197,94,.2); }
+    .arch-node.infra    { background: rgba(59,130,246,.12);  color: #60a5fa; border: 1px solid rgba(59,130,246,.2); }
+    .arch-node.auto     { background: rgba(245,158,11,.12);  color: #fbbf24; border: 1px solid rgba(245,158,11,.2); }
+    .arch-node.bad      { background: rgba(239,68,68,.08);   color: #f87171; border: 1px dashed rgba(239,68,68,.3); opacity: .75; }
+    .arch-arrow {
+      text-align: center; color: var(--color-border);
+      font-size: .8rem; margin: .25rem 0 .25rem 110px;
+      font-family: var(--font-mono);
+    }
+    .arch-vs { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+    .arch-vs-panel {
+      background: var(--color-bg-alt);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+    }
+    .arch-vs-panel h5 {
+      font-size: .75rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em;
+      margin-bottom: 1rem; padding-bottom: .5rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .arch-vs-panel.before h5 { color: #f87171; border-color: rgba(239,68,68,.2); }
+    .arch-vs-panel.after  h5 { color: #4ade80; border-color: rgba(34,197,94,.2); }
+    .arch-vs-item { display: flex; align-items: flex-start; gap: .6rem; margin-bottom: .6rem; font-size: .82rem; }
+    .arch-vs-item .dot { width: 6px; height: 6px; border-radius: 50%; margin-top: .35rem; flex-shrink: 0; }
+    .before .dot { background: #f87171; }
+    .after  .dot { background: #4ade80; }
+    .phase-timeline { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin: 1.5rem 0; }
+    .phase-block {
+      background: var(--color-bg-alt);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: 1.25rem; border-top: 3px solid;
+    }
+    .phase-block.p1 { border-top-color: #f87171; }
+    .phase-block.p2 { border-top-color: #fbbf24; }
+    .phase-block.p3 { border-top-color: #4ade80; }
+    .phase-block h5 { font-size: .8rem; font-weight: 700; margin-bottom: .75rem; }
+    .phase-block.p1 h5 { color: #f87171; }
+    .phase-block.p2 h5 { color: #fbbf24; }
+    .phase-block.p3 h5 { color: #4ade80; }
+    .phase-block ul { list-style: none; padding: 0; margin: 0; }
+    .phase-block li { font-size: .78rem; color: var(--color-text-muted); padding: .25rem 0 .25rem .9rem; position: relative; }
+    .phase-block li::before { content: '·'; position: absolute; left: 0; color: var(--color-text-muted); }
+    .workflow { display: flex; flex-direction: column; gap: 0; margin: 1.5rem 0; }
+    .workflow-step { display: flex; align-items: flex-start; gap: 1rem; position: relative; }
+    .workflow-step:not(:last-child)::after {
+      content: ''; position: absolute;
+      left: 17px; top: 38px; width: 2px;
+      height: calc(100% - 10px);
+      background: var(--color-border);
+    }
+    .workflow-num {
+      width: 36px; height: 36px; min-width: 36px;
+      background: var(--color-accent-glow);
+      border: 1px solid rgba(59,130,246,.3);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .78rem; font-weight: 700;
+      color: var(--color-accent);
+      font-family: var(--font-mono);
+      position: relative; z-index: 1;
+    }
+    .workflow-content { padding: 0 0 1.5rem; }
+    .workflow-content h5 { font-size: .9rem; font-weight: 700; color: var(--color-heading); margin-bottom: .35rem; }
+    .workflow-content p { font-size: .84rem; color: var(--color-text-muted); margin: 0; }
+    .perm-list { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin: 1rem 0; }
+    .perm-item {
+      display: flex; align-items: center; gap: .5rem;
+      background: var(--color-bg-alt);
+      border: 1px solid var(--color-border);
+      border-radius: 5px; padding: .45rem .75rem;
+    }
+    .perm-item .perm-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent); flex-shrink: 0; }
+    .perm-item span { font-size: .75rem; font-family: var(--font-mono); color: var(--color-text-muted); }
+    .report-links { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1.5rem 0; }
+    .report-link {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .65rem 1.25rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      font-size: .85rem; font-weight: 600;
+      color: var(--color-accent);
+      transition: border-color var(--transition), background var(--transition);
+    }
+    .report-link:hover {
+      border-color: var(--color-accent);
+      background: var(--color-accent-glow);
+      color: var(--color-accent);
+    }
+    @media (max-width: 768px) {
+      .arch-label { width: 70px; min-width: 70px; font-size: .65rem; }
+      .arch-arrow { margin-left: 70px; }
+      .arch-vs { grid-template-columns: 1fr; }
+      .phase-timeline { grid-template-columns: 1fr; }
+      .cs-screenshot-grid { grid-template-columns: 1fr; }
+      .perm-list { grid-template-columns: 1fr; }
+      .cs-stats { grid-template-columns: repeat(2,1fr); }
+    }
+  </style>
 </head>
 <body>
 
@@ -22,8 +181,7 @@
         <a href="index.html">Home</a>
         <a href="about.html">About</a>
         <a href="services.html">Services</a>
-        <a href="case-studies.html">Case Studies</a>
-        <a href="blog.html">Blog</a>
+        <a href="case-studies.html" class="active">Case Studies</a>
         <a href="contact.html">Contact</a>
       </div>
       <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
@@ -41,744 +199,540 @@
     </div>
   </section>
 
-  <!-- ================================================================
-       CASE STUDY 1 — Azure Identity & Conditional Access Implementation
-       ================================================================ -->
-  <section id="cs-identity" class="section">
+  <!-- ===================== CASE STUDY ===================== -->
+  <section class="section">
     <div class="container">
-      <div class="cs-body">
-        <span class="cs-card-tag identity" style="margin-bottom: 1.5rem;">Identity &amp; Access Management</span>
-        <h1 style="font-size: 2rem; margin-bottom: .5rem;">Azure Identity &amp; Conditional Access Implementation</h1>
-        <div class="cs-meta">
-          <span>&#128197; Duration: 6 weeks</span>
-          <span>&#128101; Scope: 300 users</span>
-          <span>&#127970; Industry: Financial Services</span>
-        </div>
+      <div class="cs-full" id="cs-m365-security">
 
-        <!-- Client Background -->
-        <h2>1. Client Background</h2>
-        <p>The client is a mid-sized financial services firm with approximately 300 employees operating across three branch offices and a growing remote workforce. Their IT environment was a hybrid configuration with on-premises Active Directory synced to Azure AD via Azure AD Connect. The organization had recently undergone a compliance audit that flagged multiple identity-related control gaps, including the absence of multi-factor authentication, overly permissive role assignments, and no Conditional Access policies governing sign-in behavior.</p>
-        <p>The firm operated in a regulated environment subject to SOC 2 Type II and state financial regulatory requirements. Their existing identity posture relied on legacy password-only authentication with no centralized policy enforcement for cloud application access.</p>
-
-        <!-- Problem -->
-        <h2>2. Problem</h2>
-        <p>The compliance audit identified the following critical findings:</p>
-        <ul>
-          <li>No multi-factor authentication was enforced for any user population, including administrators and privileged accounts.</li>
-          <li>Global Administrator roles were permanently assigned to six accounts, three of which belonged to non-IT staff who had inherited permissions during earlier migrations.</li>
-          <li>No Conditional Access policies existed — all authentication requests were evaluated identically regardless of location, device state, or risk level.</li>
-          <li>Guest accounts from prior vendor engagements remained active with access to SharePoint sites containing sensitive financial data.</li>
-          <li>No sign-in risk detection or automated remediation was configured in Azure AD Identity Protection.</li>
-        </ul>
-        <p>The audit required remediation within 90 days. The client needed a partner who could design and implement a Zero Trust identity framework without disrupting daily operations for 300 users across multiple offices.</p>
-
-        <!-- Technical Environment -->
-        <h2>3. Technical Environment</h2>
-        <ul>
-          <li><strong>Identity Provider:</strong> Azure Active Directory (Entra ID) — P2 licensing</li>
-          <li><strong>Directory Sync:</strong> Azure AD Connect v2.x with password hash synchronization</li>
-          <li><strong>On-Premises AD:</strong> Windows Server 2019 domain controllers (2 DCs, single forest, single domain)</li>
-          <li><strong>Email &amp; Productivity:</strong> Microsoft 365 E3</li>
-          <li><strong>Endpoints:</strong> 280 Windows 11 devices managed via Intune, 40 macOS devices unmanaged</li>
-          <li><strong>VPN:</strong> Cisco AnyConnect for remote access</li>
-          <li><strong>Line-of-Business Apps:</strong> 4 SaaS applications federated via SAML, 2 on-premises apps published via Azure AD Application Proxy</li>
-        </ul>
-
-        <!-- Architecture -->
-        <h2>4. Architecture</h2>
-        <p>We designed a layered Conditional Access architecture organized into three policy tiers:</p>
-
-        <h3>Tier 1 — Baseline Policies (All Users)</h3>
-        <ul>
-          <li>Require MFA for all cloud applications from untrusted networks</li>
-          <li>Block legacy authentication protocols (IMAP, POP3, SMTP AUTH, ActiveSync with basic auth)</li>
-          <li>Require compliant or Hybrid Azure AD Joined devices for Microsoft 365 access</li>
-          <li>Block sign-ins from countries outside the firm's operating geography</li>
-        </ul>
-
-        <h3>Tier 2 — Privileged Access Policies</h3>
-        <ul>
-          <li>Require MFA on every sign-in for all directory roles (no trusted location exemptions)</li>
-          <li>Require compliant device AND MFA for Azure portal, Microsoft 365 admin center, and Exchange admin center</li>
-          <li>Session controls: 1-hour sign-in frequency for privileged roles, no persistent browser sessions</li>
-        </ul>
-
-        <h3>Tier 3 — Risk-Based Policies (Identity Protection)</h3>
-        <ul>
-          <li>Medium and high sign-in risk: require MFA challenge</li>
-          <li>High user risk: force password change with MFA</li>
-          <li>Automated risk remediation via self-service password reset (SSPR) integrated with on-premises writeback</li>
-        </ul>
-
-        <h3>RBAC Redesign</h3>
-        <p>We implemented a least-privilege role assignment model using Privileged Identity Management (PIM):</p>
-        <ul>
-          <li>Reduced permanent Global Administrator assignments from 6 to 2 (break-glass accounts)</li>
-          <li>All other administrative roles converted to PIM-eligible with 8-hour activation windows</li>
-          <li>Activation requires MFA + justification text</li>
-          <li>Approval workflow for Global Admin and Exchange Admin activations</li>
-          <li>Monthly access reviews configured for all privileged roles</li>
-        </ul>
-
-        <!-- Implementation -->
-        <h2>5. Implementation</h2>
-        <p>The implementation was executed over six weeks in four phases:</p>
-
-        <h3>Phase 1 — MFA Rollout (Week 1–2)</h3>
-        <ul>
-          <li>Enabled combined security information registration in Azure AD</li>
-          <li>Configured Microsoft Authenticator as the primary MFA method with FIDO2 security keys as backup for executives</li>
-          <li>Deployed MFA registration campaign using Conditional Access in report-only mode to identify users who had not yet registered</li>
-          <li>Provided department-by-department registration support with a 10-day enrollment window</li>
-          <li>Achieved 98% MFA registration coverage before enforcing policies</li>
-        </ul>
-
-        <h3>Phase 2 — Conditional Access Deployment (Week 3–4)</h3>
-        <ul>
-          <li>Deployed all Tier 1 and Tier 2 policies in report-only mode</li>
-          <li>Analyzed sign-in logs over 5 business days to identify legitimate workflows that would be impacted</li>
-          <li>Identified and remediated 3 legacy applications using basic authentication — migrated to modern auth via app registration updates</li>
-          <li>Defined named locations for office IP ranges and VPN egress points</li>
-          <li>Switched all policies from report-only to enforced after validation</li>
-        </ul>
-
-        <h3>Phase 3 — PIM &amp; RBAC Remediation (Week 5)</h3>
-        <ul>
-          <li>Inventoried all Azure AD role assignments using Microsoft Graph PowerShell</li>
-          <li>Removed 4 unnecessary permanent Global Admin assignments</li>
-          <li>Configured PIM for 12 directory roles with role-specific activation settings</li>
-          <li>Created 2 break-glass accounts with monitored sign-in alerts</li>
-          <li>Configured access reviews for all privileged roles on a 30-day cycle</li>
-        </ul>
-
-        <h3>Phase 4 — Identity Protection &amp; Cleanup (Week 6)</h3>
-        <ul>
-          <li>Enabled Azure AD Identity Protection risk policies (sign-in risk + user risk)</li>
-          <li>Configured SSPR with on-premises password writeback</li>
-          <li>Audited and removed 23 stale guest accounts</li>
-          <li>Configured external collaboration settings to restrict guest invitations to specific admin roles</li>
-          <li>Delivered runbook documentation and conducted a 2-hour knowledge transfer session with the client's IT team</li>
-        </ul>
-
-        <!-- Tools Used -->
-        <h2>6. Tools Used</h2>
-        <div class="cs-tools-grid">
-          <span class="cs-tool">Azure Active Directory (Entra ID)</span>
-          <span class="cs-tool">Conditional Access</span>
-          <span class="cs-tool">Privileged Identity Management</span>
-          <span class="cs-tool">Azure AD Identity Protection</span>
-          <span class="cs-tool">Microsoft Authenticator</span>
-          <span class="cs-tool">FIDO2 Security Keys</span>
-          <span class="cs-tool">Azure AD Connect</span>
-          <span class="cs-tool">Microsoft Graph PowerShell</span>
-          <span class="cs-tool">Azure AD Application Proxy</span>
-          <span class="cs-tool">Microsoft Intune</span>
-        </div>
-
-        <!-- Outcome -->
-        <h2>7. Outcome</h2>
-        <div class="outcome-grid">
-          <div class="outcome-card">
-            <div class="metric">100%</div>
-            <div class="label">MFA Coverage</div>
-          </div>
-          <div class="outcome-card">
-            <div class="metric">14→2</div>
-            <div class="label">Permanent Privileged Roles</div>
-          </div>
-          <div class="outcome-card">
-            <div class="metric">23</div>
-            <div class="label">Stale Guests Removed</div>
-          </div>
-          <div class="outcome-card">
-            <div class="metric">0</div>
-            <div class="label">Legacy Auth Protocols Active</div>
+        <div class="cs-full-header">
+          <span class="cs-card-tag security">Security</span>
+          <h2>Microsoft 365 Security Assessment &amp; Remediation</h2>
+          <div class="cs-meta">
+            <span>Duration: 3 weeks</span>
+            <span>Scope: 22 users</span>
+            <span>Industry: Legal Services</span>
+            <span>Location: Grand Cayman</span>
           </div>
         </div>
-        <ul>
-          <li>All compliance audit findings related to identity were remediated within the 90-day window.</li>
-          <li>Legacy authentication was fully blocked with zero production impact after the migration to modern auth.</li>
-          <li>Privileged access is now governed by PIM with time-bound activation, MFA, and justification requirements.</li>
-          <li>Risk-based Conditional Access policies automatically remediate compromised credentials without helpdesk intervention.</li>
-          <li>The client passed their subsequent SOC 2 Type II audit with no identity-related findings.</li>
-        </ul>
-      </div>
-    </div>
-  </section>
 
-  <hr style="border: none; border-top: 1px solid var(--color-border); max-width: 820px; margin: 0 auto;">
-
-  <!-- ================================================================
-       CASE STUDY 2 — SIEM Deployment with Wazuh & Splunk
-       ================================================================ -->
-  <section id="cs-siem" class="section">
-    <div class="container">
-      <div class="cs-body">
-        <span class="cs-card-tag security" style="margin-bottom: 1.5rem;">Security Monitoring</span>
-        <h1 style="font-size: 2rem; margin-bottom: .5rem;">SIEM Deployment with Wazuh &amp; Splunk</h1>
-        <div class="cs-meta">
-          <span>&#128197; Duration: 8 weeks</span>
-          <span>&#128421; Scope: 150+ endpoints</span>
-          <span>&#127973; Industry: Healthcare</span>
+        <!-- 1 -->
+        <div class="cs-section">
+          <h3>Client Background</h3>
+          <p>The client is a law firm operating in the Cayman Islands with 22 users across two partners, six associates, and fourteen support staff. The firm handles sensitive legal and financial matters for offshore clients, generating and storing privileged communications, confidential financial records, and PII on a daily basis.</p>
+          <p>The firm had been running Microsoft 365 Business Standard for two years. The environment was originally configured by a previous IT provider and had never been formally reviewed since deployment. The baseline security maturity was low: no formal security policies, no MFA enforcement, no security monitoring, and no documented configuration baseline to drift against.</p>
+          <p>Two phishing incidents in the six months prior to the engagement — one resulting in a compromised staff account — prompted the partners to commission a formal assessment. An upcoming cyber insurance renewal added urgency: the insurer had explicitly flagged MFA enforcement and email domain authentication (DMARC/DKIM/SPF) as mandatory requirements for continued coverage.</p>
         </div>
 
-        <!-- Client Background -->
-        <h2>1. Client Background</h2>
-        <p>The client is a regional healthcare organization operating a network of outpatient clinics and a central administrative office. Their IT environment consisted of approximately 150 endpoints (Windows workstations and servers), 12 Linux servers hosting internal applications and databases, and network infrastructure including Cisco switches and Palo Alto firewalls. The organization was subject to HIPAA compliance requirements and had recently engaged a third-party risk assessor who identified the absence of centralized security monitoring as a critical gap.</p>
-        <p>Prior to the engagement, the client had no SIEM, no centralized log collection, and no formalized incident detection or response procedures. Security events were reviewed ad hoc — typically only after an incident had already been reported by end users.</p>
+        <!-- 2 -->
+        <div class="cs-section">
+          <h3>Problem</h3>
+          <p>The assessment identified a cluster of configuration gaps that had accumulated silently since initial deployment. None of them produced visible failures — email still worked and users could still sign in — but collectively they created an attack surface wide open to the techniques actively being used against Microsoft 365 environments.</p>
+          <p>The most critical findings and their attack surface:</p>
 
-        <!-- Problem -->
-        <h2>2. Problem</h2>
-        <ul>
-          <li>No centralized log aggregation — logs were stored locally on individual systems with inconsistent retention periods ranging from 7 days to 90 days.</li>
-          <li>No real-time alerting for security events. Failed authentication attempts, privilege escalations, and malware detections were not surfaced to the IT team.</li>
-          <li>No file integrity monitoring (FIM) on servers handling electronic protected health information (ePHI).</li>
-          <li>No correlation between endpoint events, network events, and application logs — making lateral movement detection impossible.</li>
-          <li>The HIPAA risk assessment specifically cited the lack of audit controls (§164.312(b)) and the inability to produce audit trails for access to ePHI systems.</li>
-          <li>The client's cyber liability insurance provider flagged the absence of SIEM as a policy renewal risk.</li>
-        </ul>
+          <ul class="cs-list">
+            <li><strong>No Conditional Access policies.</strong> Authentication was evaluated identically regardless of user, location, device, or risk signal. A stolen credential gave unrestricted tenant access. No control existed to stop it.</li>
+            <li><strong>Legacy authentication not blocked.</strong> Protocols like IMAP, POP3, and Exchange ActiveSync bypass MFA entirely. The firm's earlier phishing incident could have been used to access the victim's full mailbox via these protocols with no additional barrier.</li>
+            <li><strong>Device code flow not blocked.</strong> The attack sends a victim a real Microsoft URL, the victim completes MFA on their own device, and the attacker receives a valid session token without ever touching the password or triggering a legacy auth prompt.</li>
+            <li><strong>Admin account had an active mailbox.</strong> The Global Administrator account received email. A successful phishing attack against this account would give an attacker complete control over the entire tenant in one step — disable MFA, create backdoors, exfiltrate data, delete audit logs.</li>
+          </ul>
 
-        <!-- Technical Environment -->
-        <h2>3. Technical Environment</h2>
-        <ul>
-          <li><strong>Endpoints:</strong> 120 Windows 10/11 workstations, 18 Windows Server 2019/2022 instances</li>
-          <li><strong>Linux Servers:</strong> 12 Ubuntu 22.04 LTS servers (web applications, PostgreSQL databases, SFTP)</li>
-          <li><strong>Network:</strong> Cisco Catalyst switches, Palo Alto PA-820 firewalls (2 sites)</li>
-          <li><strong>EHR System:</strong> On-premises electronic health record system running on Windows Server with SQL Server backend</li>
-          <li><strong>Authentication:</strong> On-premises Active Directory (single domain)</li>
-          <li><strong>Antivirus:</strong> Microsoft Defender for Endpoint (partially deployed)</li>
-          <li><strong>Backup:</strong> Veeam Backup &amp; Replication</li>
-        </ul>
+          <figure class="cs-screenshot">
+            <img src="assets/images/misconfigs/MisconfiguredRoles.jpg" alt="Global Administrator role assignments showing multiple accounts assigned the role">
+            <figcaption>Global Administrator assignments — multiple user accounts holding the role, including accounts with active mailboxes</figcaption>
+          </figure>
 
-        <!-- Architecture -->
-        <h2>4. Architecture</h2>
-        <p>We designed a dual-platform SIEM architecture using Wazuh for endpoint detection and file integrity monitoring, and Splunk for log aggregation, correlation, and dashboarding. The architecture was purpose-built to separate detection from analysis — allowing each platform to do what it does best.</p>
+          <ul class="cs-list">
+            <li><strong>Audit logging was disabled.</strong> No record existed of who accessed what data, what admin changes were made, or what emails were sent. A breach could have been ongoing for months with no forensic trail and no ability to satisfy an insurance claim.</li>
+          </ul>
 
-        <h3>Wazuh Architecture</h3>
-        <ul>
-          <li><strong>Wazuh Manager:</strong> Single-node deployment on Ubuntu 22.04 (8 vCPU, 16 GB RAM, 500 GB SSD) hosted on-premises in the primary data center</li>
-          <li><strong>Wazuh Agents:</strong> Deployed to all 150+ endpoints (Windows and Linux) via GPO (Windows) and Ansible (Linux)</li>
-          <li><strong>Capabilities Enabled:</strong> File integrity monitoring, rootkit detection, Security Configuration Assessment (SCA), vulnerability detection, active response</li>
-          <li><strong>Integration:</strong> Wazuh alerts forwarded to Splunk via syslog (CEF format) for correlation and long-term storage</li>
-        </ul>
+          <figure class="cs-screenshot">
+            <img src="assets/images/misconfigs/AuditLoggingDisabled.jpg" alt="Terminal output showing UnifiedAuditLogIngestionEnabled returned as False">
+            <figcaption>PowerShell confirming Unified Audit Log disabled — <code>UnifiedAuditLogIngestionEnabled: False</code></figcaption>
+          </figure>
 
-        <h3>Splunk Architecture</h3>
-        <ul>
-          <li><strong>Splunk Enterprise:</strong> Single indexer deployment on dedicated hardware (16 vCPU, 32 GB RAM, 2 TB NVMe) with a 90-day hot/warm retention and 365-day cold retention</li>
-          <li><strong>Universal Forwarders:</strong> Deployed to all Windows servers for Windows Event Log forwarding (Security, System, Application, PowerShell Script Block logs)</li>
-          <li><strong>Network Log Sources:</strong> Palo Alto firewalls configured to send syslog (traffic, threat, URL filtering) to Splunk via Heavy Forwarder</li>
-          <li><strong>Splunk Apps Installed:</strong> Splunk Security Essentials, Palo Alto Networks App for Splunk, Wazuh App for Splunk</li>
-        </ul>
+          <ul class="cs-list">
+            <li><strong>No email domain protection.</strong> Without DMARC, DKIM, and SPF, anyone could send email that appeared to originate from the firm's domain.</li>
+            <li><strong>Anti-phishing at default settings.</strong> User impersonation protection, domain impersonation protection, and mailbox intelligence were all off.</li>
+          </ul>
 
-        <h3>Log Flow</h3>
-        <pre><code>Endpoints (Wazuh Agents) ──→ Wazuh Manager ──→ Syslog (CEF) ──→ Splunk
-Windows Servers (UF) ──────────────────────────────────────────→ Splunk
-Palo Alto Firewalls ──→ Heavy Forwarder ───────────────────────→ Splunk
-Linux Servers (rsyslog) ───────────────────────────────────────→ Splunk
-Active Directory (WEF) ──→ Windows Event Collector ──→ UF ────→ Splunk</code></pre>
+          <figure class="cs-screenshot">
+            <img src="assets/images/misconfigs/EmailSecurity.jpg" alt="Anti-phishing policy showing all protection settings disabled">
+            <figcaption>Anti-phishing policy — default configuration with impersonation protection and mailbox intelligence off</figcaption>
+          </figure>
 
-        <!-- Implementation -->
-        <h2>5. Implementation</h2>
+          <ul class="cs-list">
+            <li><strong>No DLP policies.</strong> Sensitive client data could be emailed externally or shared through SharePoint with no detection or blocking.</li>
+            <li><strong>SharePoint external sharing unrestricted.</strong> Content could be shared with anyone, including unauthenticated external users via anonymous links.</li>
+          </ul>
 
-        <h3>Phase 1 — Infrastructure Build (Week 1–2)</h3>
-        <ul>
-          <li>Provisioned and hardened the Wazuh manager server (CIS Ubuntu benchmark applied)</li>
-          <li>Installed and configured Splunk Enterprise with defined indexes: <code>wazuh</code>, <code>wineventlog</code>, <code>pan_firewall</code>, <code>linux_syslog</code></li>
-          <li>Configured TLS encryption for all agent-manager and forwarder-indexer communication</li>
-          <li>Established syslog relay from Wazuh manager to Splunk Heavy Forwarder</li>
-        </ul>
+          <figure class="cs-screenshot">
+            <img src="assets/images/misconfigs/SharePointSetting.jpg" alt="SharePoint admin center showing external sharing set to Most permissive for both SharePoint and OneDrive">
+            <figcaption>SharePoint sharing settings — both SharePoint and OneDrive set to Most Permissive</figcaption>
+          </figure>
 
-        <h3>Phase 2 — Agent Deployment (Week 3–4)</h3>
-        <ul>
-          <li>Deployed Wazuh agents to Windows endpoints via Group Policy software installation (MSI package)</li>
-          <li>Deployed Wazuh agents to Linux servers via Ansible playbook with registration key automation</li>
-          <li>Deployed Splunk Universal Forwarders to all Windows servers via GPO</li>
-          <li>Configured Windows Event Forwarding (WEF) to centralize domain controller logs</li>
-          <li>Configured rsyslog on Linux servers to forward auth.log, syslog, and application logs to Splunk</li>
-        </ul>
+          <ul class="cs-list">
+            <li><strong>Overly permissive user settings.</strong> Users could register applications and guests had the same access level as internal members — both control surfaces for credential theft and lateral movement.</li>
+          </ul>
 
-        <h3>Phase 3 — Detection Engineering (Week 5–6)</h3>
-        <ul>
-          <li>Configured Wazuh FIM rules for critical paths: EHR application directories, database data files, system binaries, and configuration files</li>
-          <li>Enabled Wazuh SCA policies: CIS Windows Server 2019, CIS Ubuntu 22.04, PCI DSS</li>
-          <li>Built 24 custom Splunk alerts mapped to MITRE ATT&amp;CK techniques:
-            <ul>
-              <li>Brute force detection (T1110) — 10+ failed logons in 5 minutes from single source</li>
-              <li>Privilege escalation (T1078) — non-admin account added to Domain Admins</li>
-              <li>Lateral movement (T1021) — RDP sessions from non-standard source hosts</li>
-              <li>Data exfiltration (T1048) — outbound data transfers exceeding 500 MB to external IPs</li>
-              <li>PowerShell abuse (T1059.001) — encoded command execution or download cradles</li>
-            </ul>
-          </li>
-          <li>Configured Wazuh active response to automatically block source IPs after 5 failed SSH attempts on Linux servers</li>
-        </ul>
+          <figure class="cs-screenshot">
+            <img src="assets/images/misconfigs/UserSettings.jpg" alt="Entra ID user settings showing app registration open to all users and guest access set to most inclusive">
+            <figcaption>Entra ID user settings — app registration open to all users, guest access unrestricted</figcaption>
+          </figure>
 
-        <h3>Phase 4 — Dashboarding &amp; Tuning (Week 7–8)</h3>
-        <ul>
-          <li>Built 6 Splunk dashboards: Security Overview, Authentication Activity, Firewall Traffic Analysis, Wazuh Alert Summary, FIM Changes, and Compliance Status</li>
-          <li>Tuned alert thresholds to reduce false positives — iterated through 3 rounds of tuning based on 2 weeks of production data</li>
-          <li>Configured email and webhook alerting for critical and high-severity events</li>
-          <li>Documented 8 incident response playbooks covering the most common alert types</li>
-          <li>Conducted tabletop exercise with the client's IT team using simulated alert scenarios</li>
-        </ul>
-
-        <!-- Tools Used -->
-        <h2>6. Tools Used</h2>
-        <div class="cs-tools-grid">
-          <span class="cs-tool">Wazuh 4.x</span>
-          <span class="cs-tool">Splunk Enterprise</span>
-          <span class="cs-tool">Splunk Universal Forwarder</span>
-          <span class="cs-tool">Splunk Heavy Forwarder</span>
-          <span class="cs-tool">Palo Alto Syslog</span>
-          <span class="cs-tool">Windows Event Forwarding</span>
-          <span class="cs-tool">rsyslog</span>
-          <span class="cs-tool">Ansible</span>
-          <span class="cs-tool">Group Policy (GPO)</span>
-          <span class="cs-tool">MITRE ATT&amp;CK Framework</span>
+          <ul class="cs-list">
+            <li><strong>Licensing gap.</strong> Microsoft 365 Business Standard does not include Conditional Access, Intune, or full DLP capabilities. The controls needed to address the most critical findings required Business Premium.</li>
+          </ul>
         </div>
 
-        <!-- Outcome -->
-        <h2>7. Outcome</h2>
-        <div class="outcome-grid">
-          <div class="outcome-card">
-            <div class="metric">150+</div>
-            <div class="label">Endpoints Monitored</div>
-          </div>
-          <div class="outcome-card">
-            <div class="metric">24</div>
-            <div class="label">Detection Rules Deployed</div>
-          </div>
-          <div class="outcome-card">
-            <div class="metric">365 days</div>
-            <div class="label">Log Retention</div>
-          </div>
-          <div class="outcome-card">
-            <div class="metric">&lt; 5 min</div>
-            <div class="label">Alert-to-Notification Time</div>
-          </div>
-        </div>
-        <ul>
-          <li>The client achieved full HIPAA audit control compliance (§164.312(b)) with centralized, tamper-evident log storage and defined retention policies.</li>
-          <li>File integrity monitoring on ePHI systems provided audit trails required for breach notification assessments.</li>
-          <li>Within the first 30 days of production, the SIEM detected and alerted on 3 legitimate security events: a compromised vendor VPN credential, a misconfigured service account with interactive logon, and an unauthorized software installation on a clinic workstation.</li>
-          <li>The cyber liability insurance renewal was approved without the SIEM-related exception.</li>
-          <li>The client's IT team was trained to triage alerts and execute playbooks independently within 4 weeks of go-live.</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <hr style="border: none; border-top: 1px solid var(--color-border); max-width: 820px; margin: 0 auto;">
-
-  <!-- ================================================================
-       CASE STUDY 3 — Active Directory Hardening
-       ================================================================ -->
-  <section id="cs-ad" class="section">
-    <div class="container">
-      <div class="cs-body">
-        <span class="cs-card-tag infra" style="margin-bottom: 1.5rem;">Infrastructure</span>
-        <h1 style="font-size: 2rem; margin-bottom: .5rem;">Active Directory Hardening</h1>
-        <div class="cs-meta">
-          <span>&#128197; Duration: 5 weeks</span>
-          <span>&#128101; Scope: 500-user domain</span>
-          <span>&#127981; Industry: Manufacturing</span>
+        <!-- 3 -->
+        <div class="cs-section">
+          <h3>Technical Environment</h3>
+          <ul class="cs-list">
+            <li><strong>M365 licence at engagement start:</strong> Business Standard — upgraded to Business Premium as Phase 1 prerequisite</li>
+            <li><strong>Identity provider:</strong> Microsoft Entra ID (free tier at start; P1 unlocked via Business Premium; P2 provisioned for partners and admin accounts)</li>
+            <li><strong>Users:</strong> 22 — 2 partners, 6 associates, 14 support staff</li>
+            <li><strong>Email platform:</strong> Exchange Online</li>
+            <li><strong>File storage:</strong> SharePoint Online and OneDrive for Business</li>
+            <li><strong>DNS provider:</strong> Hostinger</li>
+            <li><strong>Devices:</strong> Unmanaged — mix of Windows and macOS, no MDM enrolled at engagement start</li>
+            <li><strong>Assessment tool:</strong> Maester 2.0.0 — open-source PowerShell-based Microsoft 365 security assessment framework</li>
+            <li><strong>Automation platform:</strong> GitHub Actions with workload identity federation</li>
+          </ul>
         </div>
 
-        <!-- Client Background -->
-        <h2>1. Client Background</h2>
-        <p>The client is a mid-sized manufacturing company with approximately 500 employees across a primary headquarters, two production facilities, and a distribution warehouse. Their IT infrastructure was anchored by a single Active Directory forest that had been in continuous operation since Windows Server 2008, having been upgraded in place through Server 2012 R2 and most recently to Server 2016. The domain functional level had been raised to 2016, but many legacy configurations, GPOs, and permission structures remained from earlier versions.</p>
-        <p>The company had recently engaged a cybersecurity firm for a penetration test as part of a customer compliance requirement. The pentest results revealed multiple critical findings in the Active Directory environment that required immediate remediation.</p>
+        <!-- 4 -->
+        <div class="cs-section">
+          <h3>Architecture</h3>
 
-        <!-- Problem -->
-        <h2>2. Problem</h2>
-        <p>The penetration test identified the following Active Directory security findings:</p>
-        <ul>
-          <li><strong>Weak Password Policies:</strong> The Default Domain Policy enforced a minimum password length of 8 characters with no complexity requirements. The password history was set to 3, and the maximum password age was 180 days.</li>
-          <li><strong>Excessive Privileged Access:</strong> 34 accounts were members of Domain Admins, including 12 service accounts and 8 accounts belonging to employees who had changed roles or left the company.</li>
-          <li><strong>No Local Administrator Password Management:</strong> All workstations shared the same local administrator password, which was set via a GPO preference (recoverable from SYSVOL in cleartext).</li>
-          <li><strong>No Audit Logging:</strong> Advanced audit policies were not configured. Domain controller security event logs were set to a maximum size of 20 MB with overwrite-as-needed, resulting in less than 48 hours of audit trail.</li>
-          <li><strong>Legacy Protocols:</strong> NTLMv1 authentication was permitted, and SMBv1 was enabled on domain controllers.</li>
-          <li><strong>GPO Sprawl:</strong> 87 Group Policy Objects existed in the domain, many with conflicting settings, broken WMI filters, or no linked OUs. No GPO documentation existed.</li>
-          <li><strong>Kerberoastable Accounts:</strong> 9 service accounts had SPNs registered with weak passwords, making them vulnerable to Kerberoasting attacks.</li>
-        </ul>
+          <h4>Before Remediation — Flat Trust Model</h4>
+          <p>The pre-engagement architecture had no authentication controls layered between a credential and tenant access. Any valid username and password — regardless of source — reached Exchange and SharePoint directly. There was no identity perimeter.</p>
 
-        <!-- Technical Environment -->
-        <h2>3. Technical Environment</h2>
-        <ul>
-          <li><strong>Domain Controllers:</strong> 4 DCs running Windows Server 2016 (2 at HQ, 1 per remote site)</li>
-          <li><strong>Domain Functional Level:</strong> Windows Server 2016</li>
-          <li><strong>Forest:</strong> Single forest, single domain</li>
-          <li><strong>User Accounts:</strong> ~500 user accounts, ~45 service accounts</li>
-          <li><strong>Workstations:</strong> ~400 Windows 10/11 domain-joined machines</li>
-          <li><strong>Servers:</strong> 28 Windows Server instances (file servers, print servers, application servers, SQL servers)</li>
-          <li><strong>Sites and Services:</strong> 3 AD sites with inter-site replication</li>
-          <li><strong>DNS:</strong> AD-integrated DNS zones</li>
-          <li><strong>DHCP:</strong> Windows DHCP with failover between HQ DCs</li>
-        </ul>
-
-        <!-- Architecture -->
-        <h2>4. Architecture</h2>
-        <p>We designed a hardening plan organized into five workstreams, each aligned to CIS Microsoft Windows Server 2016 Benchmark recommendations and Microsoft's tiered administration model:</p>
-
-        <h3>Workstream 1 — Password Policy Overhaul</h3>
-        <ul>
-          <li>Implement fine-grained password policies (PSOs) for three user tiers:
-            <ul>
-              <li><strong>Standard Users:</strong> 14-character minimum, complexity enabled, 90-day max age, 24 password history</li>
-              <li><strong>Privileged Accounts:</strong> 20-character minimum, 60-day max age, 24 password history</li>
-              <li><strong>Service Accounts:</strong> 30-character managed passwords via group Managed Service Accounts (gMSAs)</li>
-            </ul>
-          </li>
-          <li>Deploy Azure AD Password Protection on-premises agents to block known-weak and organization-specific banned passwords</li>
-        </ul>
-
-        <h3>Workstream 2 — Privileged Access Remediation</h3>
-        <ul>
-          <li>Audit all privileged group memberships (Domain Admins, Enterprise Admins, Schema Admins, Administrators, Account Operators, Backup Operators)</li>
-          <li>Implement tiered administration: Tier 0 (domain controllers and identity systems), Tier 1 (member servers), Tier 2 (workstations)</li>
-          <li>Create dedicated admin accounts for each tier — no single account with cross-tier access</li>
-          <li>Deploy Protected Users security group for all Tier 0 accounts</li>
-        </ul>
-
-        <h3>Workstream 3 — LAPS Deployment</h3>
-        <ul>
-          <li>Deploy Microsoft LAPS to all domain-joined workstations and member servers</li>
-          <li>Configure unique, randomly generated local administrator passwords with 30-day rotation</li>
-          <li>Restrict LAPS password read access to designated helpdesk and server admin groups</li>
-          <li>Remove the legacy GPO preference that set a static local admin password</li>
-        </ul>
-
-        <h3>Workstream 4 — Audit Policy &amp; Monitoring</h3>
-        <ul>
-          <li>Configure Advanced Audit Policy via GPO with settings aligned to Microsoft's recommended baseline:
-            <ul>
-              <li>Account Logon: Credential Validation (Success/Failure)</li>
-              <li>Logon/Logoff: Logon, Logoff, Special Logon (Success/Failure)</li>
-              <li>Object Access: File System, Registry, SAM (Failure)</li>
-              <li>Privilege Use: Sensitive Privilege Use (Success/Failure)</li>
-              <li>Account Management: All subcategories (Success/Failure)</li>
-              <li>DS Access: Directory Service Changes (Success)</li>
-              <li>Policy Change: Audit Policy Change, Authentication Policy Change (Success)</li>
-            </ul>
-          </li>
-          <li>Increase Security event log to 1 GB with archive-when-full retention</li>
-          <li>Configure Windows Event Forwarding to centralize DC logs to a dedicated collector</li>
-        </ul>
-
-        <h3>Workstream 5 — Protocol Hardening &amp; GPO Cleanup</h3>
-        <ul>
-          <li>Disable NTLMv1: set LAN Manager authentication level to "Send NTLMv2 response only. Refuse LM &amp; NTLM"</li>
-          <li>Disable SMBv1 on all domain controllers and member servers</li>
-          <li>Enable LDAP signing and LDAP channel binding on domain controllers</li>
-          <li>Audit and rationalize GPO inventory: document, consolidate, and remove orphaned GPOs</li>
-        </ul>
-
-        <!-- Implementation -->
-        <h2>5. Implementation</h2>
-
-        <h3>Week 1 — Assessment &amp; Documentation</h3>
-        <ul>
-          <li>Ran <code>Get-ADGroupMember</code> recursively against all privileged groups and exported membership reports</li>
-          <li>Exported all 87 GPOs to HTML reports using <code>Get-GPOReport</code> and documented their link status, WMI filters, and effective settings</li>
-          <li>Ran <code>Get-ADUser -Filter * -Properties PasswordLastSet,PasswordNeverExpires</code> to identify password hygiene issues</li>
-          <li>Identified all accounts with SPNs using <code>Get-ADUser -Filter {ServicePrincipalName -ne "$null"}</code></li>
-          <li>Documented all findings in a remediation tracker with risk ratings and implementation dependencies</li>
-        </ul>
-
-        <h3>Week 2 — Password Policies &amp; Service Account Migration</h3>
-        <ul>
-          <li>Created fine-grained password policies (PSOs) for Standard Users, Privileged Accounts, and Service Accounts</li>
-          <li>Migrated 9 Kerberoastable service accounts to gMSAs — updated service configurations on dependent servers</li>
-          <li>Deployed Azure AD Password Protection proxy and DC agents — configured custom banned password list with 45 organization-specific terms</li>
-          <li>Forced password reset for all accounts that had not changed passwords in >90 days (communicated via a staged 2-week rollout per department)</li>
-        </ul>
-
-        <h3>Week 3 — Privileged Access &amp; LAPS</h3>
-        <ul>
-          <li>Removed 22 accounts from Domain Admins (8 departed employees, 12 service accounts migrated to gMSAs, 2 helpdesk accounts moved to appropriate delegated groups)</li>
-          <li>Created tiered admin accounts: <code>t0-admin-[name]</code>, <code>t1-admin-[name]</code>, <code>t2-admin-[name]</code></li>
-          <li>Deployed LAPS via GPO to all workstation and server OUs — validated password generation on 10% of devices before full rollout</li>
-          <li>Removed the legacy GPO preference with the static local admin password and verified SYSVOL cleanup</li>
-        </ul>
-
-        <h3>Week 4 — Audit Policies &amp; Protocol Hardening</h3>
-        <ul>
-          <li>Deployed Advanced Audit Policy GPO linked to Domain Controllers OU and member server OUs</li>
-          <li>Configured Windows Event Forwarding: DCs forward Security logs to a dedicated Windows Event Collector server</li>
-          <li>Disabled NTLMv1 in a staged rollout — first in report-only mode via network logon audit, then enforced after verifying no NTLMv1 dependencies</li>
-          <li>Disabled SMBv1 on all servers via GPO — confirmed no legacy dependencies via <code>Get-SmbServerConfiguration</code></li>
-          <li>Enabled LDAP signing (required) and channel binding (supported) on domain controllers</li>
-        </ul>
-
-        <h3>Week 5 — GPO Cleanup &amp; Documentation</h3>
-        <ul>
-          <li>Consolidated 87 GPOs down to 34 — removed 38 unlinked GPOs, merged 15 overlapping GPOs</li>
-          <li>Documented every remaining GPO with purpose, linked OUs, key settings, and responsible owner</li>
-          <li>Delivered hardening documentation: password policy reference, privileged access model, LAPS operations guide, audit policy baseline, and protocol configuration reference</li>
-          <li>Conducted 3-hour knowledge transfer session with the client's infrastructure team</li>
-        </ul>
-
-        <!-- Tools Used -->
-        <h2>6. Tools Used</h2>
-        <div class="cs-tools-grid">
-          <span class="cs-tool">Active Directory</span>
-          <span class="cs-tool">Group Policy (GPO)</span>
-          <span class="cs-tool">Fine-Grained Password Policies</span>
-          <span class="cs-tool">Microsoft LAPS</span>
-          <span class="cs-tool">Azure AD Password Protection</span>
-          <span class="cs-tool">gMSA (Group Managed Service Accounts)</span>
-          <span class="cs-tool">PowerShell</span>
-          <span class="cs-tool">Windows Event Forwarding</span>
-          <span class="cs-tool">Advanced Audit Policy</span>
-          <span class="cs-tool">CIS Benchmarks</span>
-        </div>
-
-        <!-- Outcome -->
-        <h2>7. Outcome</h2>
-        <div class="outcome-grid">
-          <div class="outcome-card">
-            <div class="metric">34→12</div>
-            <div class="label">Domain Admin Members</div>
+          <div class="arch-diagram">
+            <h4>Pre-Remediation State</h4>
+            <div class="arch-layer">
+              <div class="arch-label">Identity</div>
+              <div class="arch-nodes">
+                <div class="arch-node bad">Entra ID (Free)</div>
+                <div class="arch-node bad">No CA Policies</div>
+                <div class="arch-node bad">No MFA</div>
+                <div class="arch-node bad">Legacy Auth Enabled</div>
+              </div>
+            </div>
+            <div class="arch-arrow">&#8595; &nbsp;any valid credential = full access</div>
+            <div class="arch-layer">
+              <div class="arch-label">Apps</div>
+              <div class="arch-nodes">
+                <div class="arch-node bad">Exchange Online</div>
+                <div class="arch-node bad">SharePoint</div>
+                <div class="arch-node bad">Teams</div>
+              </div>
+            </div>
+            <div class="arch-arrow">&#8595; &nbsp;no data protection layer</div>
+            <div class="arch-layer">
+              <div class="arch-label">Data</div>
+              <div class="arch-nodes">
+                <div class="arch-node bad">No DLP</div>
+                <div class="arch-node bad">No Audit Logging</div>
+                <div class="arch-node bad">External Sharing Open</div>
+              </div>
+            </div>
           </div>
-          <div class="outcome-card">
-            <div class="metric">87→34</div>
-            <div class="label">GPOs Rationalized</div>
+
+          <h4>After Remediation — Layered Zero Trust Model</h4>
+          <p>Post-engagement, every authentication attempt is evaluated against a set of conditions before any access is granted. Device compliance, location, user risk, and authentication strength are all enforced as access controls. Data is protected by DLP at the point of transmission and full audit logging provides the forensic trail required for insurance and compliance purposes.</p>
+
+          <div class="arch-diagram">
+            <h4>Post-Remediation State</h4>
+            <div class="arch-layer">
+              <div class="arch-label">Identity</div>
+              <div class="arch-nodes">
+                <div class="arch-node identity">Entra ID P1/P2</div>
+                <div class="arch-node identity">MFA (All Users)</div>
+                <div class="arch-node identity">FIDO2 (Partners)</div>
+              </div>
+            </div>
+            <div class="arch-arrow">&#8595; &nbsp;evaluated by Conditional Access engine</div>
+            <div class="arch-layer">
+              <div class="arch-label">Access</div>
+              <div class="arch-nodes">
+                <div class="arch-node security">Block Legacy Auth</div>
+                <div class="arch-node security">Block Device Code Flow</div>
+                <div class="arch-node security">Trusted Locations</div>
+                <div class="arch-node security">Compliant Device</div>
+              </div>
+            </div>
+            <div class="arch-arrow">&#8595; &nbsp;access granted to protected applications</div>
+            <div class="arch-layer">
+              <div class="arch-label">Apps</div>
+              <div class="arch-nodes">
+                <div class="arch-node infra">Exchange Online</div>
+                <div class="arch-node infra">SharePoint</div>
+                <div class="arch-node infra">Teams</div>
+              </div>
+            </div>
+            <div class="arch-arrow">&#8595; &nbsp;data protected at rest and in motion</div>
+            <div class="arch-layer">
+              <div class="arch-label">Data</div>
+              <div class="arch-nodes">
+                <div class="arch-node data">Purview DLP</div>
+                <div class="arch-node data">Unified Audit Log</div>
+                <div class="arch-node data">Restricted Sharing</div>
+              </div>
+            </div>
+            <div class="arch-arrow">&#8595; &nbsp;email perimeter authenticated</div>
+            <div class="arch-layer">
+              <div class="arch-label">Email</div>
+              <div class="arch-nodes">
+                <div class="arch-node security">SPF</div>
+                <div class="arch-node security">DKIM</div>
+                <div class="arch-node security">DMARC p=reject</div>
+                <div class="arch-node security">Safe Links / Attachments</div>
+              </div>
+            </div>
+            <div class="arch-arrow">&#8595; &nbsp;continuous posture monitoring</div>
+            <div class="arch-layer">
+              <div class="arch-label">Monitoring</div>
+              <div class="arch-nodes">
+                <div class="arch-node auto">Maester (Weekly)</div>
+                <div class="arch-node auto">GitHub Actions</div>
+                <div class="arch-node auto">Log Analytics</div>
+                <div class="arch-node auto">Email Report</div>
+              </div>
+            </div>
           </div>
-          <div class="outcome-card">
-            <div class="metric">0</div>
-            <div class="label">Kerberoastable Accounts</div>
-          </div>
-          <div class="outcome-card">
-            <div class="metric">100%</div>
-            <div class="label">LAPS Coverage</div>
+
+          <div class="arch-vs">
+            <div class="arch-vs-panel before">
+              <h5>Before — Attack Surface</h5>
+              <div class="arch-vs-item"><div class="dot"></div><span>Password alone = full tenant access</span></div>
+              <div class="arch-vs-item"><div class="dot"></div><span>Legacy auth bypasses all MFA controls</span></div>
+              <div class="arch-vs-item"><div class="dot"></div><span>Admin account directly targetable via phishing</span></div>
+              <div class="arch-vs-item"><div class="dot"></div><span>Domain spoofing unrestricted</span></div>
+              <div class="arch-vs-item"><div class="dot"></div><span>No forensic trail for insurance or investigation</span></div>
+              <div class="arch-vs-item"><div class="dot"></div><span>Client data freely exfiltrable</span></div>
+            </div>
+            <div class="arch-vs-panel after">
+              <h5>After — Controls Enforced</h5>
+              <div class="arch-vs-item"><div class="dot"></div><span>MFA enforced on every sign-in for all users</span></div>
+              <div class="arch-vs-item"><div class="dot"></div><span>Legacy auth blocked at all protocols</span></div>
+              <div class="arch-vs-item"><div class="dot"></div><span>Admin account has no mailbox or licence</span></div>
+              <div class="arch-vs-item"><div class="dot"></div><span>DMARC/DKIM/SPF deployed and verified</span></div>
+              <div class="arch-vs-item"><div class="dot"></div><span>Full unified audit trail active</span></div>
+              <div class="arch-vs-item"><div class="dot"></div><span>DLP blocking sensitive data exfiltration</span></div>
+            </div>
           </div>
         </div>
-        <ul>
-          <li>All penetration test findings were remediated and verified through a follow-up retest that produced zero critical or high findings in the AD environment.</li>
-          <li>NTLMv1 and SMBv1 were fully eliminated from the domain with no production impact.</li>
-          <li>The tiered administration model prevents lateral movement from workstation compromise to domain controller access.</li>
-          <li>LAPS eliminated the shared local administrator password — the single most commonly exploited finding in enterprise pentest engagements.</li>
-          <li>Advanced audit policies and centralized log forwarding provide the audit trail required for the client's customer compliance obligations.</li>
-          <li>The client's GPO environment is now documented, maintainable, and reduced in complexity by 61%.</li>
-        </ul>
-      </div>
-    </div>
-  </section>
 
-  <hr style="border: none; border-top: 1px solid var(--color-border); max-width: 820px; margin: 0 auto;">
+        <!-- 5 -->
+        <div class="cs-section">
+          <h3>Implementation</h3>
 
-  <!-- ================================================================
-       CASE STUDY 4 — Linux Server Hardening & Automation
-       ================================================================ -->
-  <section id="cs-linux" class="section">
-    <div class="container">
-      <div class="cs-body">
-        <span class="cs-card-tag linux" style="margin-bottom: 1.5rem;">Linux Administration</span>
-        <h1 style="font-size: 2rem; margin-bottom: .5rem;">Linux Server Hardening &amp; Automation</h1>
-        <div class="cs-meta">
-          <span>&#128197; Duration: 4 weeks</span>
-          <span>&#128421; Scope: 40 servers</span>
-          <span>&#128640; Industry: SaaS / Technology</span>
+          <div class="phase-timeline">
+            <div class="phase-block p1">
+              <h5>Phase 1 — Baseline Remediation</h5>
+              <ul>
+                <li>Licence upgrade (Business Premium)</li>
+                <li>Conditional Access policy set</li>
+                <li>MFA enforcement (all users)</li>
+                <li>Block legacy auth + device code flow</li>
+                <li>Email domain protection (SPF/DKIM/DMARC)</li>
+                <li>Anti-phishing hardening</li>
+                <li>Audit logging enabled</li>
+                <li>DLP policies (Purview)</li>
+                <li>Break glass account</li>
+                <li>SharePoint sharing restrictions</li>
+              </ul>
+            </div>
+            <div class="phase-block p2">
+              <h5>Phase 2 — Device Management</h5>
+              <ul>
+                <li>Microsoft Intune deployment</li>
+                <li>Device compliance policies</li>
+                <li>CA: enforce device compliance</li>
+                <li>CA: non-persistent browser sessions</li>
+                <li>FIDO2 (YubiKey 5C NFC) — partners</li>
+                <li>Remove weaker auth from partner accounts</li>
+                <li>PIM configuration</li>
+              </ul>
+            </div>
+            <div class="phase-block p3">
+              <h5>Phase 3 — Automation</h5>
+              <ul>
+                <li>Azure Log Analytics Workspace</li>
+                <li>M365 / Intune diagnostic settings</li>
+                <li>Alert rules (critical events)</li>
+                <li>Entra ID app registration</li>
+                <li>GitHub Actions workflow (weekly)</li>
+                <li>Maester assessment + email report</li>
+                <li>Handover documentation</li>
+              </ul>
+            </div>
+          </div>
+
+          <h4>a. Assessment</h4>
+          <p>The assessment was conducted using Maester, an open-source PowerShell-based framework that runs automated tests against a Microsoft 365 tenant and produces results mapped to industry benchmarks including CIS Microsoft 365 Foundations, CISA SCuBA, and the Entra ID Security Configuration Analyzer. Maester was connected to the tenant via Microsoft Graph and Exchange Online PowerShell modules to ensure full test coverage.</p>
+          <p>The initial run was completed against the tenant before any changes were made. Findings were triaged into three categories before remediation work began: findings requiring immediate action, findings requiring infrastructure that did not yet exist (Intune, P2 licensing), and findings that were disproportionate for a 22-person professional services firm. Applying every benchmark control wholesale without understanding the client's operational context is not security consulting — it is checkbox compliance.</p>
+
+          <div class="cs-stats">
+            <div class="cs-stat"><h4>313</h4><p>Total Tests Run</p></div>
+            <div class="cs-stat"><h4>126</h4><p>Total Failures</p></div>
+            <div class="cs-stat"><h4>53</h4><p>High &amp; Critical Failures</p></div>
+            <div class="cs-stat"><h4>94</h4><p>Tests Passed</p></div>
+          </div>
+
+          <figure class="cs-screenshot">
+            <img src="assets/images/maester-reports/MaesterBeforeTest.jpg" alt="Maester dashboard showing 313 total tests, 126 failed, 94 passed before remediation">
+            <figcaption>Maester — initial assessment results before any remediation work began</figcaption>
+          </figure>
+
+          <div class="report-links">
+            <a href="assets/reports/maester-before-redacted.html" target="_blank" class="report-link">
+              &#128196; View Full Before Report
+            </a>
+            <a href="assets/reports/maester-after-redacted.html" target="_blank" class="report-link">
+              &#128196; View Full After Report
+            </a>
+          </div>
+
+          <h4>b. Remediation</h4>
+          <p>All Phase 1 remediation was completed before Phase 2 work began. The following documents the specific technical controls deployed.</p>
+
+          <p><strong style="color:var(--color-heading);">Conditional Access Policy Set:</strong></p>
+          <ul class="cs-list">
+            <li>MFA for all users — all cloud apps, all platforms, all locations</li>
+            <li>MFA for administrators — scoped to all admin roles</li>
+            <li>MFA for Azure management — scoped to Azure Management app</li>
+            <li>Block legacy authentication — all users, all legacy auth clients including Exchange ActiveSync with basic auth</li>
+            <li>Block device code flow — targeting the Device Code authentication flow</li>
+            <li>Restrict security info registration — limited to named trusted locations</li>
+          </ul>
+
+          <figure class="cs-screenshot">
+            <img src="assets/images/remediations/ConditionalAccessPolicies.jpg" alt="Conditional Access policies list showing all deployed policies in On state">
+            <figcaption>Conditional Access — full policy set deployed and enabled across the tenant</figcaption>
+          </figure>
+
+          <p><strong style="color:var(--color-heading);">Identity Hardening:</strong></p>
+          <ul class="cs-list">
+            <li>Break glass account created — no mailbox, no licence, excluded from all Conditional Access policies, credentials stored offline</li>
+            <li>Admin account separated from licensed user account — admin functions only, no email</li>
+            <li>SSPR disabled for admin accounts</li>
+            <li>App registration and user consent restricted to administrators; admin consent workflow enabled; consent to risky apps blocked</li>
+            <li>Custom banned password list deployed via Entra ID Password Protection</li>
+          </ul>
+
+          <figure class="cs-screenshot">
+            <img src="assets/images/misconfigs/SSPRDisabled.jpg" alt="Password reset properties showing self service password reset set to None">
+            <figcaption>Self-service password reset — set to None, preventing end users from resetting credentials without admin involvement</figcaption>
+          </figure>
+
+          <p><strong style="color:var(--color-heading);">Email Security:</strong></p>
+          <ul class="cs-list">
+            <li>SPF record published for all firm domains via Hostinger DNS</li>
+            <li>DKIM signing enabled; CNAME records published; selector records validated with <code>dig</code>; signing confirmed active in Defender portal</li>
+            <li>DMARC record published at <code>p=reject</code>; <code>sp=reject</code>; aggregate and forensic reporting configured</li>
+            <li>Anti-phishing policy: phishing threshold raised to Level 3; impersonation protection enabled for both partners by display name and email address; mailbox intelligence on</li>
+            <li>Safe Links and Safe Attachments deployed for Exchange</li>
+            <li>External sender warning enabled</li>
+            <li>Auto-forwarding to external domains blocked via transport rule</li>
+          </ul>
+
+          <div class="cs-screenshot-grid">
+            <figure class="cs-screenshot" style="margin:0;">
+              <img src="assets/images/remediations/DKIMSettings.jpg" alt="Email authentication settings showing DKIM enabled and Valid for all domains">
+              <figcaption>DKIM — all domains showing Valid and Enabled</figcaption>
+            </figure>
+            <figure class="cs-screenshot" style="margin:0;">
+              <img src="assets/images/remediations/DMARCrecord.jpg" alt="Hostinger DNS TXT record showing DMARC with p=reject and sp=reject">
+              <figcaption>DMARC record — p=reject; sp=reject deployed in Hostinger DNS</figcaption>
+            </figure>
+          </div>
+
+          <div class="cs-callout">
+            <strong>Note on Maester DKIM and DMARC test results:</strong> CIS.M365.2.1.9 (DKIM) and CISA.MS.EXO.4.2 (DMARC p=reject) both return failed status in the post-remediation Maester report despite correct configuration. DKIM signing was verified active in the Defender portal and CNAME records were confirmed in Hostinger DNS via <code>dig</code>. The DMARC record was independently verified and shows <code>p=reject</code>. Both are assessed as false positives in the Maester test logic for this configuration.
+          </div>
+
+          <p><strong style="color:var(--color-heading);">Data Protection and Audit:</strong></p>
+          <ul class="cs-list">
+            <li>Unified Audit Log enabled via <code>Set-AdminAuditLogConfig -UnifiedAuditLogIngestionEnabled $true</code></li>
+            <li>Microsoft Purview DLP policies deployed covering credit card numbers, IBAN, passport numbers, and a custom sensitive information type for legal privilege markers</li>
+            <li>SharePoint external sharing restricted to approved domains only; guest link expiration enforced at 30 days</li>
+            <li>Guest directory access restricted; guest invitation permissions limited to designated admin roles</li>
+          </ul>
+
+          <p><strong style="color:var(--color-heading);">Phase 2 — Device Management and Phishing-Resistant MFA:</strong></p>
+          <ul class="cs-list">
+            <li>Microsoft Intune deployed; all firm devices enrolled</li>
+            <li>Device compliance policies defined for Windows and macOS — BitLocker/FileVault, OS patch currency, screen lock timeout, antivirus active</li>
+            <li>Conditional Access updated to enforce device compliance for all sign-ins</li>
+            <li>Non-persistent browser session policy applied to unmanaged devices</li>
+            <li>FIDO2 authentication enabled in Entra ID; YubiKey 5C NFC hardware security keys enrolled for both partner accounts and the admin account; weaker authentication methods removed from partner authentication policies</li>
+          </ul>
+
+          <h4>c. Automation — GitHub Actions Workflow</h4>
+          <p>The continuous monitoring component uses a GitHub Actions workflow to run Maester on a weekly schedule, generate the HTML report as a build artifact, and deliver a structured email summary to the partners every Monday morning. Authentication uses workload identity federation — no client secrets or long-lived credentials are stored anywhere in the repository or GitHub Secrets.</p>
+
+          <p><strong style="color:var(--color-heading);">Authentication Design:</strong> The workflow authenticates to Microsoft 365 using an Entra ID application registration with a federated credential that trusts GitHub Actions as the identity provider. When the workflow runs, GitHub provides a short-lived OIDC token that Entra ID exchanges for an access token scoped to the permissions granted to the app registration. Nothing is stored — the token is generated at runtime and expires when the job completes.</p>
+
+          <figure class="cs-screenshot">
+            <img src="assets/images/github-actions/GitHubFederation.jpg" alt="Azure app registration showing federated credentials tab with github-actions-main credential and zero client secrets">
+            <figcaption>Entra ID app registration — federated credential configured for GitHub Actions; Certificates (0), Client secrets (0)</figcaption>
+          </figure>
+
+          <div class="workflow">
+            <div class="workflow-step">
+              <div class="workflow-num">01</div>
+              <div class="workflow-content">
+                <h5>Trigger</h5>
+                <p>Scheduled via cron at 07:00 UTC every Monday. Also dispatchable manually via <code>workflow_dispatch</code> for on-demand runs.</p>
+              </div>
+            </div>
+            <div class="workflow-step">
+              <div class="workflow-num">02</div>
+              <div class="workflow-content">
+                <h5>OIDC Token Exchange</h5>
+                <p>GitHub requests a short-lived OIDC token from its identity provider. The Azure login action exchanges this for an Entra ID access token using the federated credential. No secrets change hands.</p>
+              </div>
+            </div>
+            <div class="workflow-step">
+              <div class="workflow-num">03</div>
+              <div class="workflow-content">
+                <h5>Install PowerShell Modules</h5>
+                <p>Maester and all required Graph and Exchange Online modules are installed. Module versions are pinned in the workflow to prevent drift.</p>
+              </div>
+            </div>
+            <div class="workflow-step">
+              <div class="workflow-num">04</div>
+              <div class="workflow-content">
+                <h5>Authenticate and Run Maester</h5>
+                <p><code>Connect-MgGraph -AccessToken</code> uses the token from step 2. Maester runs the full test suite and exports HTML and JSON output to a dated results directory.</p>
+              </div>
+            </div>
+            <div class="workflow-step">
+              <div class="workflow-num">05</div>
+              <div class="workflow-content">
+                <h5>Parse Results</h5>
+                <p>A PowerShell script reads the JSON output and produces a structured summary: total tests, pass count, fail count by severity, and any new failures since the previous run.</p>
+              </div>
+            </div>
+            <div class="workflow-step">
+              <div class="workflow-num">06</div>
+              <div class="workflow-content">
+                <h5>Upload Artifact</h5>
+                <p>The HTML report is uploaded as a GitHub Actions artifact with 90-day retention — a historical record of posture over time without requiring external storage.</p>
+              </div>
+            </div>
+            <div class="workflow-step">
+              <div class="workflow-num">07</div>
+              <div class="workflow-content">
+                <h5>Send Email via Microsoft Graph</h5>
+                <p>A PowerShell script calls the Microsoft Graph <code>/sendMail</code> endpoint. The email body contains the structured summary with the full HTML report attached.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="cs-screenshot-grid">
+            <figure class="cs-screenshot" style="margin:0;">
+              <img src="assets/images/github-actions/GithubActionsSuccess.jpg" alt="GitHub Actions run showing Status Success, 2m 29s, 1 artifact uploaded">
+              <figcaption>GitHub Actions — workflow run completing successfully with 1 artifact uploaded</figcaption>
+            </figure>
+            <figure class="cs-screenshot" style="margin:0;">
+              <img src="assets/images/github-actions/GitHubTestResults.jpg" alt="Maester test results table embedded in the GitHub Actions run summary">
+              <figcaption>Maester test results embedded in the GitHub Actions run summary</figcaption>
+            </figure>
+          </div>
+
+          <figure class="cs-screenshot">
+            <img src="assets/images/github-actions/EmailGitHubReceived.jpg" alt="Outlook inbox showing automated Maester weekly security report email with HTML report attached">
+            <figcaption>Automated weekly report delivered to Outlook — pass/fail summary and HTML report attached</figcaption>
+          </figure>
+
+          <p><strong style="color:var(--color-heading);">Required API Permissions (Application):</strong></p>
+          <div class="perm-list">
+            <div class="perm-item"><div class="perm-dot"></div><span>Policy.Read.All</span></div>
+            <div class="perm-item"><div class="perm-dot"></div><span>Reports.Read.All</span></div>
+            <div class="perm-item"><div class="perm-dot"></div><span>Directory.Read.All</span></div>
+            <div class="perm-item"><div class="perm-dot"></div><span>IdentityRiskyUser.Read.All</span></div>
+            <div class="perm-item"><div class="perm-dot"></div><span>DeviceManagementConfiguration.Read.All</span></div>
+            <div class="perm-item"><div class="perm-dot"></div><span>Organization.Read.All</span></div>
+            <div class="perm-item"><div class="perm-dot"></div><span>SecurityEvents.Read.All</span></div>
+            <div class="perm-item"><div class="perm-dot"></div><span>Mail.Send</span></div>
+            <div class="perm-item"><div class="perm-dot"></div><span>AuditLog.Read.All</span></div>
+            <div class="perm-item"><div class="perm-dot"></div><span>RoleManagement.Read.All</span></div>
+          </div>
         </div>
 
-        <!-- Client Background -->
-        <h2>1. Client Background</h2>
-        <p>The client is a B2B SaaS company that operates a customer-facing platform hosted across a fleet of 40 Linux servers. The infrastructure consists of a mix of Ubuntu 22.04 LTS and Red Hat Enterprise Linux 8 servers running across two data centers and an AWS VPC. The server fleet includes web application servers (Nginx), application servers (Node.js and Python), PostgreSQL database servers, Redis cache servers, and internal tooling servers.</p>
-        <p>The company had scaled rapidly over the previous 18 months, growing from 8 servers to 40. Server provisioning had been performed manually by different engineers without a standardized hardening baseline. The company's SOC 2 Type II audit preparation identified server hardening and log monitoring as areas requiring immediate improvement.</p>
-
-        <!-- Problem -->
-        <h2>2. Problem</h2>
-        <ul>
-          <li><strong>No Hardening Baseline:</strong> Each server had been configured independently. SSH configurations varied across the fleet — some permitted root login, some allowed password authentication, and port numbers were inconsistent.</li>
-          <li><strong>Inconsistent Firewall Rules:</strong> Some servers ran <code>iptables</code>, some ran <code>firewalld</code>, and 6 servers had no host-based firewall configured at all. Rules were not documented.</li>
-          <li><strong>No Centralized Logging:</strong> Application logs were stored locally with no forwarding. Auth logs, syslog, and audit logs were not aggregated — making incident investigation across servers impractical.</li>
-          <li><strong>No File Integrity Monitoring:</strong> No mechanism existed to detect unauthorized changes to system binaries, configuration files, or application code on production servers.</li>
-          <li><strong>Unpatched Systems:</strong> 14 servers had not been patched in over 120 days. No patch management schedule or process existed.</li>
-          <li><strong>No Audit Logging:</strong> <code>auditd</code> was installed but not configured on any server. No syscall monitoring was in place for privilege escalation, file access, or process execution events.</li>
-          <li><strong>Excessive Sudo Access:</strong> 11 user accounts had unrestricted <code>NOPASSWD: ALL</code> sudo access. No sudo logging was configured.</li>
-        </ul>
-
-        <!-- Technical Environment -->
-        <h2>3. Technical Environment</h2>
-        <ul>
-          <li><strong>Operating Systems:</strong> 24 servers running Ubuntu 22.04 LTS, 16 servers running RHEL 8</li>
-          <li><strong>Cloud/Hosting:</strong> 28 servers in AWS (EC2), 12 servers in a colocation data center</li>
-          <li><strong>Server Roles:</strong>
-            <ul>
-              <li>8 Nginx reverse proxy / web servers</li>
-              <li>12 application servers (Node.js, Python/Gunicorn)</li>
-              <li>6 PostgreSQL database servers (primary + replicas)</li>
-              <li>4 Redis cache servers</li>
-              <li>4 internal tooling / CI-CD runners</li>
-              <li>4 monitoring and log aggregation servers</li>
-              <li>2 bastion / jump servers</li>
-            </ul>
-          </li>
-          <li><strong>Configuration Management:</strong> None (all manual provisioning)</li>
-          <li><strong>Monitoring:</strong> Prometheus + Grafana for performance metrics (no security monitoring)</li>
-          <li><strong>SSH Access:</strong> Key-based for most servers, with 8 servers still permitting password authentication</li>
-        </ul>
-
-        <!-- Architecture -->
-        <h2>4. Architecture</h2>
-        <p>We designed a hardening and monitoring architecture with three components: an automated hardening toolkit (Bash), centralized log aggregation (rsyslog + Splunk), and audit monitoring (auditd).</p>
-
-        <h3>Hardening Automation</h3>
-        <p>We developed a modular Bash hardening toolkit that could be executed on both Ubuntu and RHEL systems. The toolkit was organized into discrete modules, each addressing a specific CIS Benchmark control area:</p>
-        <pre><code>harden.sh
-├── modules/
-│   ├── 01-ssh-hardening.sh
-│   ├── 02-firewall-config.sh
-│   ├── 03-user-access.sh
-│   ├── 04-kernel-params.sh
-│   ├── 05-filesystem.sh
-│   ├── 06-auditd-config.sh
-│   ├── 07-logging.sh
-│   ├── 08-services.sh
-│   └── 09-patch-management.sh
-├── configs/
-│   ├── sshd_config.hardened
-│   ├── audit.rules
-│   ├── rsyslog.conf
-│   └── iptables.rules.[role]
-├── lib/
-│   ├── detect-os.sh
-│   └── logger.sh
-└── reports/
-    └── compliance-check.sh</code></pre>
-
-        <h3>Centralized Logging Architecture</h3>
-        <ul>
-          <li>All servers forward logs via rsyslog over TLS to a centralized log aggregation server</li>
-          <li>Log aggregation server runs Splunk Universal Forwarder, indexing to a Splunk instance</li>
-          <li>Log sources: auth.log / secure, syslog, audit.log, sudo.log, application logs</li>
-          <li>Retention: 90 days online, 365 days archived to S3</li>
-        </ul>
-
-        <h3>Auditd Configuration</h3>
-        <p>We deployed a comprehensive <code>auditd</code> ruleset monitoring:</p>
-        <ul>
-          <li>All executions of privileged commands (<code>sudo</code>, <code>su</code>, <code>passwd</code>, <code>chsh</code>)</li>
-          <li>Modifications to <code>/etc/passwd</code>, <code>/etc/shadow</code>, <code>/etc/group</code>, <code>/etc/sudoers</code></li>
-          <li>File permission changes on critical directories</li>
-          <li>Kernel module loading and unloading</li>
-          <li>Network configuration changes</li>
-          <li>All unsuccessful file access attempts (EACCES, EPERM)</li>
-        </ul>
-
-        <!-- Implementation -->
-        <h2>5. Implementation</h2>
-
-        <h3>Week 1 — Assessment &amp; Toolkit Development</h3>
-        <ul>
-          <li>Ran CIS benchmark assessment on a representative sample (2 Ubuntu, 2 RHEL) — documented baseline compliance scores (Ubuntu: 38%, RHEL: 42%)</li>
-          <li>Inventoried all SSH configurations, firewall rules, user accounts, sudo privileges, and running services across all 40 servers</li>
-          <li>Developed the modular hardening toolkit with OS detection (Ubuntu vs. RHEL) and dry-run capability</li>
-          <li>Tested toolkit against non-production servers in a staging environment</li>
-        </ul>
-
-        <h3>Week 2 — SSH &amp; Access Hardening</h3>
-        <ul>
-          <li>Deployed standardized SSH configuration across all 40 servers:
-            <pre><code># /etc/ssh/sshd_config — hardened baseline
-PermitRootLogin no
-PasswordAuthentication no
-PubkeyAuthentication yes
-MaxAuthTries 3
-ClientAliveInterval 300
-ClientAliveCountMax 2
-X11Forwarding no
-AllowTcpForwarding no
-Banner /etc/issue.net
-Protocol 2
-Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com
-MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
-KexAlgorithms curve25519-sha256,diffie-hellman-group16-sha512</code></pre>
-          </li>
-          <li>Consolidated SSH access through 2 bastion hosts — direct SSH access to production servers removed from security groups / firewall rules</li>
-          <li>Remediated sudo access: replaced 11 <code>NOPASSWD: ALL</code> entries with role-specific command allowlists</li>
-          <li>Enabled sudo logging to <code>/var/log/sudo.log</code> with <code>Defaults logfile</code> directive</li>
-          <li>Removed 7 dormant user accounts that had not logged in within 90 days</li>
-        </ul>
-
-        <h3>Week 3 — Firewall, Kernel &amp; Service Hardening</h3>
-        <ul>
-          <li>Standardized all servers on <code>iptables</code> with role-specific rulesets (web server, app server, database server, bastion)</li>
-          <li>Default policy: DROP on INPUT and FORWARD, ACCEPT on OUTPUT with explicit allowlists per server role</li>
-          <li>Applied kernel hardening parameters via <code>/etc/sysctl.d/99-hardening.conf</code>:
-            <pre><code># Network hardening
-net.ipv4.ip_forward = 0
-net.ipv4.conf.all.send_redirects = 0
-net.ipv4.conf.all.accept_redirects = 0
-net.ipv4.conf.all.accept_source_route = 0
-net.ipv4.conf.all.log_martians = 1
-net.ipv4.icmp_echo_ignore_broadcasts = 1
-net.ipv4.tcp_syncookies = 1
-
-# Kernel hardening
-kernel.randomize_va_space = 2
-kernel.dmesg_restrict = 1
-kernel.kptr_restrict = 2
-fs.suid_dumpable = 0</code></pre>
-          </li>
-          <li>Disabled 14 unnecessary services across the fleet (cups, avahi-daemon, rpcbind, telnet, etc.)</li>
-          <li>Mounted <code>/tmp</code>, <code>/var/tmp</code>, and <code>/dev/shm</code> with <code>noexec,nosuid,nodev</code> options</li>
-        </ul>
-
-        <h3>Week 4 — Logging, Auditing &amp; Compliance Validation</h3>
-        <ul>
-          <li>Deployed and configured <code>auditd</code> on all 40 servers with the standardized ruleset</li>
-          <li>Configured rsyslog TLS forwarding to the centralized log server — verified log receipt from all 40 hosts</li>
-          <li>Applied all pending security patches — 14 servers required kernel updates (scheduled during maintenance window with rolling restarts)</li>
-          <li>Ran post-hardening CIS benchmark assessment: Ubuntu servers scored 91%, RHEL servers scored 89%</li>
-          <li>Documented all configurations in a server hardening baseline document with per-module explanations</li>
-          <li>Created a compliance check script (<code>compliance-check.sh</code>) that validates hardening state and outputs a pass/fail report per control</li>
-          <li>Delivered runbook to client engineering team and conducted a 2-hour walkthrough of the toolkit, logging architecture, and ongoing maintenance procedures</li>
-        </ul>
-
-        <!-- Tools Used -->
-        <h2>6. Tools Used</h2>
-        <div class="cs-tools-grid">
-          <span class="cs-tool">Bash</span>
-          <span class="cs-tool">auditd</span>
-          <span class="cs-tool">rsyslog</span>
-          <span class="cs-tool">iptables</span>
-          <span class="cs-tool">OpenSSH</span>
-          <span class="cs-tool">sysctl</span>
-          <span class="cs-tool">CIS Benchmarks</span>
-          <span class="cs-tool">Splunk Universal Forwarder</span>
-          <span class="cs-tool">AWS Security Groups</span>
-          <span class="cs-tool">Prometheus / Grafana</span>
-        </div>
-
-        <!-- Outcome -->
-        <h2>7. Outcome</h2>
-        <div class="outcome-grid">
-          <div class="outcome-card">
-            <div class="metric">38%→91%</div>
-            <div class="label">CIS Compliance (Ubuntu)</div>
-          </div>
-          <div class="outcome-card">
-            <div class="metric">42%→89%</div>
-            <div class="label">CIS Compliance (RHEL)</div>
-          </div>
-          <div class="outcome-card">
-            <div class="metric">40/40</div>
-            <div class="label">Servers Hardened</div>
-          </div>
-          <div class="outcome-card">
-            <div class="metric">0</div>
-            <div class="label">NOPASSWD Sudo Entries</div>
+        <!-- 6 -->
+        <div class="cs-section">
+          <h3>Tools Used</h3>
+          <div class="tools" style="margin-top:1rem;">
+            <span class="tool-badge">Maester 2.0.0</span>
+            <span class="tool-badge">Microsoft Entra ID</span>
+            <span class="tool-badge">Conditional Access</span>
+            <span class="tool-badge">Exchange Online</span>
+            <span class="tool-badge">Microsoft Purview</span>
+            <span class="tool-badge">Microsoft Defender</span>
+            <span class="tool-badge">Microsoft Intune</span>
+            <span class="tool-badge">PowerShell 7</span>
+            <span class="tool-badge">Microsoft Graph API</span>
+            <span class="tool-badge">GitHub Actions</span>
+            <span class="tool-badge">OIDC / Workload Identity Federation</span>
+            <span class="tool-badge">Azure Log Analytics</span>
+            <span class="tool-badge">YubiKey 5C NFC</span>
+            <span class="tool-badge">Hostinger DNS</span>
           </div>
         </div>
-        <ul>
-          <li>All 40 servers now conform to a documented, auditable hardening baseline aligned to CIS Benchmarks Level 1.</li>
-          <li>Centralized logging provides a unified view of authentication, authorization, and system events across the entire fleet.</li>
-          <li>The compliance check script enables the client's engineering team to validate hardening state on any server in under 60 seconds.</li>
-          <li>SSH access is now enforced exclusively through bastion hosts with key-based authentication, eliminating direct exposure of production servers.</li>
-          <li>The modular Bash toolkit is versioned in Git and can be executed against new servers as part of the provisioning process, preventing configuration drift.</li>
-          <li>The client passed their SOC 2 Type II audit with no findings related to server configuration or log management.</li>
-        </ul>
+
+        <!-- 7 -->
+        <div class="cs-section">
+          <h3>Outcome</h3>
+
+          <div class="cs-stats">
+            <div class="cs-stat"><h4>53&rarr;4</h4><p>High &amp; Critical Failures</p></div>
+            <div class="cs-stat"><h4>100%</h4><p>MFA Coverage</p></div>
+            <div class="cs-stat"><h4>0</h4><p>Legacy Auth Protocols Active</p></div>
+            <div class="cs-stat"><h4>Weekly</h4><p>Automated Assessments</p></div>
+          </div>
+
+          <figure class="cs-screenshot">
+            <img src="assets/images/maester-reports/MaesterAfterTest.jpg" alt="Maester dashboard showing 313 total tests, 157 passed, 77% pass rate after remediation">
+            <figcaption>Maester — post-remediation results. 157 passed, 77% pass rate. Remaining failures documented below.</figcaption>
+          </figure>
+
+          <p><strong style="color:var(--color-heading);">From an attacker's perspective, the following vectors are now closed:</strong></p>
+          <ul class="cs-list">
+            <li>A stolen password alone no longer grants access to any account. MFA is enforced via Conditional Access on every sign-in for all 22 users.</li>
+            <li>Legacy authentication is blocked at all protocols. The attack vector used in the firm's earlier phishing incident no longer works.</li>
+            <li>Device code flow phishing is blocked by Conditional Access policy. This technique does not require stealing a password or installing malware and bypasses standard security awareness training — one policy eliminates the attack surface entirely.</li>
+            <li>The admin account no longer has a mailbox. A phishing attack against it cannot be delivered via email.</li>
+            <li>DMARC, DKIM, and SPF are configured and verified for all firm domains. Spoofed emails appearing to come from a partner's address are rejected by receiving mail servers.</li>
+            <li>Partner accounts are protected by FIDO2 hardware security keys. MFA fatigue attacks and adversary-in-the-middle phishing cannot compromise these accounts remotely.</li>
+          </ul>
+
+          <p><strong style="color:var(--color-heading);">Findings documented but not immediately remediated:</strong></p>
+          <p>Four High severity findings remain open. Each was documented with a rationale rather than remediated without context.</p>
+
+          <figure class="cs-screenshot">
+            <img src="assets/images/maester-reports/NonRemediatedFindings.jpg" alt="Maester report filtered to High severity failures showing 4 remaining findings">
+            <figcaption>Remaining High severity findings — 4 total, all documented with rationale</figcaption>
+          </figure>
+
+          <ul class="cs-list">
+            <li><strong>CIS.M365.1.3.6 — Customer Lockbox:</strong> Valid control but requires a more expensive licence than the firm currently holds. The cost does not justify the risk at this firm size.</li>
+            <li><strong>CIS.M365.2.1.9 — DKIM enabled for all Exchange Online domains:</strong> DKIM signing is enabled and correctly configured. The Maester test returns a failed status despite correct configuration — assessed as a false positive.</li>
+            <li><strong>CISA.MS.AAD.4.1 — Security logs to SOC:</strong> Requires a dedicated SOC team with real-time monitoring capability. Not a realistic requirement for a 22-person firm. The automated weekly Maester report serves this purpose at an appropriate scale.</li>
+            <li><strong>CISA.MS.EXO.4.2 — DMARC p=reject:</strong> A valid DMARC record with <code>p=reject</code> is published and verified via DNS query. The Maester test returns a failed status despite correct configuration — assessed as a false positive.</li>
+          </ul>
+
+          <p><strong style="color:var(--color-heading);">Operational improvements from automation:</strong></p>
+          <ul class="cs-list">
+            <li>Maester runs automatically every Monday morning. Results are delivered directly to the partners without requiring technical expertise to initiate the assessment or interpret the raw output.</li>
+            <li>Configuration drift is now detected automatically. If a Conditional Access policy is modified, a permission is changed, or a misconfiguration is introduced, the weekly report flags it before it becomes an incident.</li>
+            <li>GitHub Actions provides a full audit trail of every assessment run. The artifact retention policy preserves 90 days of weekly reports for trend analysis.</li>
+            <li>The authentication design — OIDC federation with no stored credentials — means there are no secrets to rotate, no expiry to manage, and no risk of credential exposure in workflow logs.</li>
+          </ul>
+        </div>
+
       </div>
     </div>
   </section>
@@ -786,6 +740,7 @@ fs.suid_dumpable = 0</code></pre>
   <!-- ===================== CTA ===================== -->
   <section class="section" style="background: var(--color-bg-alt);">
     <div class="container" style="text-align:center;">
+      <span class="section-label">Get Started</span>
       <h2 class="section-title">Have a Similar Challenge?</h2>
       <p class="section-subtitle" style="margin: 0 auto 2rem;">We scope every engagement based on your specific environment and compliance requirements.</p>
       <a href="contact.html" class="btn btn-primary">Start a Conversation &rarr;</a>
@@ -822,7 +777,6 @@ fs.suid_dumpable = 0</code></pre>
           <h4>Connect</h4>
           <ul>
             <li><a href="contact.html">Contact</a></li>
-            <li><a href="blog.html">Blog</a></li>
           </ul>
         </div>
       </div>
